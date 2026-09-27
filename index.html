@@ -3,34 +3,404 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
+
 <title>Dhramvir Finds — Viral AI Prompts</title>
-<meta name="description" content="Dhramvir Finds — viral AI reel, image and cinematic prompts.">
+
+<meta name="description"
+content="Dhramvir Finds — viral AI reel, image and cinematic prompts.">
+
 <link rel="stylesheet" href="style.css">
+
+<style>
+/* Login modal */
+.df-login-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,.65);
+  z-index: 99999;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
+.df-login-box {
+  width: 100%;
+  max-width: 420px;
+  background: #fff;
+  border-radius: 24px;
+  padding: 28px 22px;
+  text-align: center;
+  position: relative;
+  box-shadow: 0 20px 60px rgba(0,0,0,.25);
+}
+
+.df-login-close {
+  position: absolute;
+  right: 14px;
+  top: 12px;
+  width: 38px;
+  height: 38px;
+  border: 0;
+  border-radius: 50%;
+  background: #f1f3f5;
+  font-size: 24px;
+  cursor: pointer;
+}
+
+.df-login-logo {
+  width: 62px;
+  height: 62px;
+  margin: 5px auto 18px;
+  border-radius: 18px;
+  background: #111827;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 21px;
+  font-weight: 800;
+}
+
+.df-login-box h2 {
+  margin: 0 0 8px;
+  color: #111827;
+  font-size: 26px;
+}
+
+.df-login-box p {
+  margin: 0 0 24px;
+  color: #6b7280;
+}
+
+.df-google-btn {
+  width: 100%;
+  border: 1px solid #d9dce1;
+  background: white;
+  color: #111827;
+  border-radius: 14px;
+  padding: 14px;
+  font-size: 16px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.df-google-btn:hover {
+  background: #f7f7f7;
+}
+
+.df-mobile-btn {
+  width: 100%;
+  margin-top: 12px;
+  border: 0;
+  background: #111827;
+  color: white;
+  border-radius: 14px;
+  padding: 14px;
+  font-size: 16px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.df-login-note {
+  font-size: 12px;
+  color: #9ca3af;
+  margin-top: 18px !important;
+}
+</style>
 </head>
+
 <body>
+
 <header class="topbar">
-  <div class="brand"><div class="logo">DF</div><div><b>Dhramvir Finds</b><small>Viral AI Prompts</small></div></div>
-</header>
-<main>
-<section class="hero">
-  <span class="badge">🔥 New viral AI prompts</span>
-  <h1>Create viral content with ready-to-use AI prompts.</h1>
-  <p>Reels, cinematic videos and HD images — simple prompts made for creators.</p>
-  <button class="primary" onclick="document.getElementById('prompts').scrollIntoView({behavior:'smooth'})">Get started</button>
-</section>
-<section id="prompts" class="section">
-  <div class="head"><h2>Explore prompts</h2><p>Unlock a prompt for ₹9 one time.</p></div>
-  <div class="grid">
-    <article class="card"><div class="thumb">🎬</div><h3>New Viral AI Prompt</h3><p>Works with: Flow AI</p><div class="bottom"><b>₹9</b><button onclick="unlock('New Viral AI Prompt')">Unlock</button></div></article>
-    <article class="card"><div class="thumb">🔥</div><h3>Trending Reel Prompt</h3><p>Works with: Flow AI</p><div class="bottom"><b>₹9</b><button onclick="unlock('Trending Reel Prompt')">Unlock</button></div></article>
-    <article class="card"><div class="thumb">📸</div><h3>HD Image With Your Original Face</h3><p>Works with: AI Image Generator</p><div class="bottom"><b>₹9</b><button onclick="unlock('HD Image With Your Original Face')">Unlock</button></div></article>
-    <article class="card"><div class="thumb">✨</div><h3>Stylish AI New Viral Video</h3><p>Works with: Flow AI</p><div class="bottom"><b>₹9</b><button onclick="unlock('Stylish AI New Viral Video')">Unlock</button></div></article>
-    <article class="card"><div class="thumb">🎥</div><h3>Cinematic Reel Prompt</h3><p>Works with: Flow AI</p><div class="bottom"><b>₹9</b><button onclick="unlock('Cinematic Reel Prompt')">Unlock</button></div></article>
+  <div class="brand">
+    <div class="logo">DF</div>
+    <div>
+      <b>Dhramvir Finds</b>
+      <small>Viral AI Prompts</small>
+    </div>
   </div>
+</header>
+
+<main>
+
+<section class="hero">
+
+  <span class="badge">🔥 New viral AI prompts</span>
+
+  <h1>
+    Create viral content with ready-to-use AI prompts.
+  </h1>
+
+  <p>
+    Reels, cinematic videos and HD images — simple prompts made for creators.
+  </p>
+
+  <button
+    id="getStartedBtn"
+    class="primary"
+    type="button">
+    Get started
+  </button>
+
 </section>
-<section class="how"><h2>How it works</h2><div class="steps"><div><b>1</b>Choose a prompt</div><div><b>2</b>Unlock for ₹9</div><div><b>3</b>Copy and create</div></div></section>
+
+
+<section id="prompts" class="section">
+
+  <div class="head">
+    <h2>Explore prompts</h2>
+    <p>Unlock a prompt for ₹9 one time.</p>
+  </div>
+
+  <div class="grid">
+
+    <article class="card">
+      <div class="thumb">🎬</div>
+      <h3>New Viral AI Prompt</h3>
+      <p>Works with: Flow AI</p>
+
+      <div class="bottom">
+        <b>₹9</b>
+        <button onclick="unlock('New Viral AI Prompt')">
+          Unlock
+        </button>
+      </div>
+    </article>
+
+
+    <article class="card">
+      <div class="thumb">🔥</div>
+      <h3>Trending Reel Prompt</h3>
+      <p>Works with: Flow AI</p>
+
+      <div class="bottom">
+        <b>₹9</b>
+        <button onclick="unlock('Trending Reel Prompt')">
+          Unlock
+        </button>
+      </div>
+    </article>
+
+
+    <article class="card">
+      <div class="thumb">📸</div>
+      <h3>HD Image With Your Original Face</h3>
+      <p>Works with: AI Image Generator</p>
+
+      <div class="bottom">
+        <b>₹9</b>
+        <button onclick="unlock('HD Image With Your Original Face')">
+          Unlock
+        </button>
+      </div>
+    </article>
+
+
+    <article class="card">
+      <div class="thumb">✨</div>
+      <h3>Stylish AI New Viral Video</h3>
+      <p>Works with: Flow AI</p>
+
+      <div class="bottom">
+        <b>₹9</b>
+        <button onclick="unlock('Stylish AI New Viral Video')">
+          Unlock
+        </button>
+      </div>
+    </article>
+
+
+    <article class="card">
+      <div class="thumb">🎥</div>
+      <h3>Cinematic Reel Prompt</h3>
+      <p>Works with: Flow AI</p>
+
+      <div class="bottom">
+        <b>₹9</b>
+        <button onclick="unlock('Cinematic Reel Prompt')">
+          Unlock
+        </button>
+      </div>
+    </article>
+
+  </div>
+
+</section>
+
+
+<section class="how">
+
+  <h2>How it works</h2>
+
+  <div class="steps">
+
+    <div>
+      <b>1</b>
+      Choose a prompt
+    </div>
+
+    <div>
+      <b>2</b>
+      Unlock for ₹9
+    </div>
+
+    <div>
+      <b>3</b>
+      Copy and create
+    </div>
+
+  </div>
+
+</section>
+
 </main>
-<footer><b>Dhramvir Finds</b><p>Viral AI prompts for creators.</p></footer>
+
+
+<footer>
+  <b>Dhramvir Finds</b>
+  <p>Viral AI prompts for creators.</p>
+</footer>
+
+
+<!-- LOGIN MODAL -->
+
+<div id="loginModal" class="df-login-overlay">
+
+  <div class="df-login-box">
+
+    <button
+      id="closeLoginBtn"
+      class="df-login-close"
+      type="button">
+      ×
+    </button>
+
+    <div class="df-login-logo">
+      DF
+    </div>
+
+    <h2>Welcome to Dhramvir Finds</h2>
+
+    <p>
+      Login or sign up to unlock viral AI prompts.
+    </p>
+
+    <button
+      id="googleLoginBtn"
+      class="df-google-btn"
+      type="button">
+      🔵 Continue with Google
+    </button>
+
+    <button
+      id="mobileLoginBtn"
+      class="df-mobile-btn"
+      type="button">
+      📱 Continue with Mobile
+    </button>
+
+    <p class="df-login-note">
+      Your account will be used to access your purchased prompts.
+    </p>
+
+  </div>
+
+</div>
+
+
 <script src="script.js"></script>
+
+
+<script>
+/* Get Started button */
+
+document.addEventListener("DOMContentLoaded", function () {
+
+  const getStartedBtn =
+    document.getElementById("getStartedBtn");
+
+  const loginModal =
+    document.getElementById("loginModal");
+
+  const closeLoginBtn =
+    document.getElementById("closeLoginBtn");
+
+
+  if (getStartedBtn) {
+
+    getStartedBtn.addEventListener("click", function () {
+
+      loginModal.style.display = "flex";
+
+    });
+
+  }
+
+
+  if (closeLoginBtn) {
+
+    closeLoginBtn.addEventListener("click", function () {
+
+      loginModal.style.display = "none";
+
+    });
+
+  }
+
+
+  if (loginModal) {
+
+    loginModal.addEventListener("click", function (event) {
+
+      if (event.target === loginModal) {
+
+        loginModal.style.display = "none";
+
+      }
+
+    });
+
+  }
+
+
+  /* Google Login - will be connected in next step */
+
+  const googleLoginBtn =
+    document.getElementById("googleLoginBtn");
+
+  if (googleLoginBtn) {
+
+    googleLoginBtn.addEventListener("click", function () {
+
+      alert(
+        "Google Login connection will be activated in the next step."
+      );
+
+    });
+
+  }
+
+
+  /* Mobile Login - will be connected in next step */
+
+  const mobileLoginBtn =
+    document.getElementById("mobileLoginBtn");
+
+  if (mobileLoginBtn) {
+
+    mobileLoginBtn.addEventListener("click", function () {
+
+      alert(
+        "Mobile OTP login connection will be activated in the next step."
+      );
+
+    });
+
+  }
+
+});
+</script>
+
 </body>
 </html>
