@@ -1,0 +1,1 @@
+function unlock(name){alert(name+"\n\nPayment will be connected next. This is the design preview.");}
