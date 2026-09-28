@@ -309,11 +309,34 @@ content="Dhramvir Finds — viral AI reel, image and cinematic prompts.">
 </div>
 
 
+<!-- SUPABASE -->
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<script>
+/* Supabase configuration */
+
+const SUPABASE_URL =
+  "https://vtpwmzwnhlukcxoinhug.supabase.co";
+
+const SUPABASE_PUBLISHABLE_KEY =
+  "sb_publishable_mjQng1XKQsKeiuQuEC2SKg_q5Z-ImzS";
+
+const supabaseClient =
+  window.supabase.createClient(
+    SUPABASE_URL,
+    SUPABASE_PUBLISHABLE_KEY
+  );
+</script>
+
+
+<!-- YOUR WEBSITE SCRIPT -->
+
 <script src="script.js"></script>
 
 
 <script>
-/* Get Started button */
+/* Login system */
 
 document.addEventListener("DOMContentLoaded", function () {
 
@@ -326,8 +349,16 @@ document.addEventListener("DOMContentLoaded", function () {
   const closeLoginBtn =
     document.getElementById("closeLoginBtn");
 
+  const googleLoginBtn =
+    document.getElementById("googleLoginBtn");
 
-  if (getStartedBtn) {
+  const mobileLoginBtn =
+    document.getElementById("mobileLoginBtn");
+
+
+  /* Get Started */
+
+  if (getStartedBtn && loginModal) {
 
     getStartedBtn.addEventListener("click", function () {
 
@@ -338,7 +369,9 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
 
-  if (closeLoginBtn) {
+  /* Close Login */
+
+  if (closeLoginBtn && loginModal) {
 
     closeLoginBtn.addEventListener("click", function () {
 
@@ -348,6 +381,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
   }
 
+
+  /* Close by clicking outside */
 
   if (loginModal) {
 
@@ -364,35 +399,74 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
 
-  /* Google Login - will be connected in next step */
-
-  const googleLoginBtn =
-    document.getElementById("googleLoginBtn");
+  /* REAL GOOGLE LOGIN */
 
   if (googleLoginBtn) {
 
-    googleLoginBtn.addEventListener("click", function () {
+    googleLoginBtn.addEventListener("click", async function () {
 
-      alert(
-        "Google Login connection will be activated in the next step."
-      );
+      googleLoginBtn.disabled = true;
+      googleLoginBtn.innerText = "Connecting...";
+
+      try {
+
+        const { error } =
+          await supabaseClient.auth.signInWithOAuth({
+
+            provider: "google",
+
+            options: {
+              redirectTo:
+                "https://dhramvirfinds-ai-prompts.github.io/Dhramvir-Finds/"
+            }
+
+          });
+
+
+        if (error) {
+
+          console.error(error);
+
+          alert(
+            "Google Login error: " +
+            error.message
+          );
+
+          googleLoginBtn.disabled = false;
+
+          googleLoginBtn.innerText =
+            "🔵 Continue with Google";
+
+        }
+
+      } catch (error) {
+
+        console.error(error);
+
+        alert(
+          "Google Login start nahi ho paya."
+        );
+
+        googleLoginBtn.disabled = false;
+
+        googleLoginBtn.innerText =
+          "🔵 Continue with Google";
+
+      }
 
     });
 
   }
 
 
-  /* Mobile Login - will be connected in next step */
-
-  const mobileLoginBtn =
-    document.getElementById("mobileLoginBtn");
+  /* Mobile login - next step */
 
   if (mobileLoginBtn) {
 
     mobileLoginBtn.addEventListener("click", function () {
 
       alert(
-        "Mobile OTP login connection will be activated in the next step."
+        "Mobile OTP login ko agle step mein connect karenge."
       );
 
     });
