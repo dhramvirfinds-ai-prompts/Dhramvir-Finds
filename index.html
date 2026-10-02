@@ -1,513 +1,580 @@
 <!doctype html>
 <html lang="en">
 <head>
+
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 
 <title>Dhramvir Finds — Viral AI Prompts</title>
 
-<meta name="description"
-content="Dhramvir Finds — viral AI reel, image and cinematic prompts.">
+<meta
+  name="description"
+  content="Dhramvir Finds — viral AI reel, image and cinematic prompts."
+>
 
 <link rel="stylesheet" href="style.css">
 
+
 <style>
 
-/* ================================
+/* =================================
    LOGIN MODAL
-================================ */
+================================= */
 
 .df-login-overlay {
-  display: none;
-  position: fixed;
-  inset: 0;
-  background: rgba(0,0,0,.65);
-  z-index: 99999;
-  align-items: center;
-  justify-content: center;
-  padding: 20px;
+  display:none;
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,.65);
+  z-index:99999;
+  align-items:center;
+  justify-content:center;
+  padding:20px;
 }
 
 .df-login-box {
-  width: 100%;
-  max-width: 420px;
-  background: #fff;
-  border-radius: 24px;
-  padding: 28px 22px;
-  text-align: center;
-  position: relative;
-  box-shadow: 0 20px 60px rgba(0,0,0,.25);
+  width:100%;
+  max-width:420px;
+  background:#fff;
+  border-radius:24px;
+  padding:28px 22px;
+  text-align:center;
+  position:relative;
+  box-shadow:0 20px 60px rgba(0,0,0,.25);
 }
 
 .df-login-close {
-  position: absolute;
-  right: 14px;
-  top: 12px;
-  width: 38px;
-  height: 38px;
-  border: 0;
-  border-radius: 50%;
-  background: #f1f3f5;
-  font-size: 24px;
-  cursor: pointer;
+  position:absolute;
+  right:14px;
+  top:12px;
+  width:38px;
+  height:38px;
+  border:0;
+  border-radius:50%;
+  background:#f1f3f5;
+  font-size:24px;
+  cursor:pointer;
 }
 
 .df-login-logo {
-  width: 62px;
-  height: 62px;
-  margin: 5px auto 18px;
-  border-radius: 18px;
-  background: #111827;
-  color: white;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 21px;
-  font-weight: 800;
+  width:62px;
+  height:62px;
+  margin:5px auto 18px;
+  border-radius:18px;
+  background:#111827;
+  color:white;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:21px;
+  font-weight:800;
 }
 
 .df-login-box h2 {
-  margin: 0 0 8px;
-  color: #111827;
-  font-size: 26px;
+  margin:0 0 8px;
+  color:#111827;
+  font-size:26px;
 }
 
 .df-login-box p {
-  margin: 0 0 24px;
-  color: #6b7280;
+  margin:0 0 24px;
+  color:#6b7280;
 }
 
 .df-google-btn {
-  width: 100%;
-  border: 1px solid #d9dce1;
-  background: white;
-  color: #111827;
-  border-radius: 14px;
-  padding: 14px;
-  font-size: 16px;
-  font-weight: 700;
-  cursor: pointer;
+  width:100%;
+  border:1px solid #d9dce1;
+  background:white;
+  color:#111827;
+  border-radius:14px;
+  padding:14px;
+  font-size:16px;
+  font-weight:700;
+  cursor:pointer;
 }
 
 .df-google-btn:hover {
-  background: #f7f7f7;
+  background:#f7f7f7;
 }
 
 .df-mobile-btn {
-  width: 100%;
-  margin-top: 12px;
-  border: 0;
-  background: #111827;
-  color: white;
-  border-radius: 14px;
-  padding: 14px;
-  font-size: 16px;
-  font-weight: 700;
-  cursor: pointer;
+  width:100%;
+  margin-top:12px;
+  border:0;
+  background:#111827;
+  color:white;
+  border-radius:14px;
+  padding:14px;
+  font-size:16px;
+  font-weight:700;
+  cursor:pointer;
 }
 
 .df-login-note {
-  font-size: 12px;
-  color: #9ca3af;
-  margin-top: 18px !important;
+  font-size:12px;
+  color:#9ca3af;
+  margin-top:18px !important;
 }
 
 
-/* ================================
+/* =================================
    CUSTOMER PROFILE BUTTON
-================================ */
+================================= */
 
 .df-profile-area {
-  margin-left: auto;
-  display: flex;
-  align-items: center;
+  margin-left:auto;
+  display:flex;
+  align-items:center;
 }
 
 .df-profile-btn {
-  display: none;
-  align-items: center;
-  gap: 7px;
-  border: 1px solid #d9dce1;
-  background: #ffffff;
-  color: #111827;
-  border-radius: 12px;
-  padding: 8px 12px;
-  font-size: 14px;
-  font-weight: 700;
-  cursor: pointer;
+  display:none;
+  align-items:center;
+  gap:7px;
+  border:1px solid #d9dce1;
+  background:#ffffff;
+  color:#111827;
+  border-radius:12px;
+  padding:8px 12px;
+  font-size:14px;
+  font-weight:700;
+  cursor:pointer;
 }
 
 .df-profile-btn:hover {
-  background: #f5f6f8;
+  background:#f5f6f8;
 }
 
 .df-profile-avatar-small {
-  width: 28px;
-  height: 28px;
-  border-radius: 50%;
-  object-fit: cover;
+  width:28px;
+  height:28px;
+  border-radius:50%;
+  object-fit:cover;
 }
 
 
-/* ================================
+/* =================================
    PROFILE MODAL
-================================ */
+================================= */
 
 .df-profile-overlay {
-  display: none;
-  position: fixed;
-  inset: 0;
-  background: rgba(0,0,0,.65);
-  z-index: 100000;
-  align-items: center;
-  justify-content: center;
-  padding: 20px;
+  display:none;
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,.65);
+  z-index:100000;
+  align-items:center;
+  justify-content:center;
+  padding:20px;
+  overflow-y:auto;
 }
 
 .df-profile-box {
-  width: 100%;
-  max-width: 400px;
-  background: #ffffff;
-  border-radius: 24px;
-  padding: 28px 22px;
-  position: relative;
-  text-align: center;
-  box-shadow: 0 20px 60px rgba(0,0,0,.25);
+  width:100%;
+  max-width:400px;
+  background:#ffffff;
+  border-radius:24px;
+  padding:28px 22px;
+  position:relative;
+  text-align:center;
+  box-shadow:0 20px 60px rgba(0,0,0,.25);
 }
 
 .df-profile-close {
-  position: absolute;
-  right: 14px;
-  top: 12px;
-  width: 38px;
-  height: 38px;
-  border: 0;
-  border-radius: 50%;
-  background: #f1f3f5;
-  font-size: 24px;
-  cursor: pointer;
+  position:absolute;
+  right:14px;
+  top:12px;
+  width:38px;
+  height:38px;
+  border:0;
+  border-radius:50%;
+  background:#f1f3f5;
+  font-size:24px;
+  cursor:pointer;
 }
 
 .df-profile-photo {
-  width: 82px;
-  height: 82px;
-  border-radius: 50%;
-  object-fit: cover;
-  margin: 8px auto 14px;
-  border: 3px solid #f1f3f5;
+  width:82px;
+  height:82px;
+  border-radius:50%;
+  object-fit:cover;
+  margin:8px auto 14px;
+  border:3px solid #f1f3f5;
 }
 
 .df-profile-name {
-  font-size: 21px;
-  font-weight: 800;
-  color: #111827;
-  margin: 0 0 5px;
+  font-size:21px;
+  font-weight:800;
+  color:#111827;
+  margin:0 0 5px;
 }
 
 .df-profile-email {
-  font-size: 13px;
-  color: #6b7280;
-  margin: 0 0 22px;
-  word-break: break-word;
+  font-size:13px;
+  color:#6b7280;
+  margin:0 0 22px;
+  word-break:break-word;
 }
 
 .df-profile-option {
-  width: 100%;
-  border: 1px solid #e1e4e8;
-  background: #ffffff;
-  color: #111827;
-  border-radius: 13px;
-  padding: 14px;
-  margin-top: 9px;
-  text-align: left;
-  font-size: 15px;
-  font-weight: 700;
-  cursor: pointer;
+  width:100%;
+  border:1px solid #e1e4e8;
+  background:#ffffff;
+  color:#111827;
+  border-radius:13px;
+  padding:14px;
+  margin-top:9px;
+  text-align:left;
+  font-size:15px;
+  font-weight:700;
+  cursor:pointer;
 }
 
 .df-profile-option:hover {
-  background: #f7f8fa;
+  background:#f7f8fa;
 }
 
 .df-logout-btn {
-  width: 100%;
-  border: 0;
-  background: #111827;
-  color: #ffffff;
-  border-radius: 13px;
-  padding: 14px;
-  margin-top: 16px;
-  font-size: 15px;
-  font-weight: 700;
-  cursor: pointer;
+  width:100%;
+  border:0;
+  background:#111827;
+  color:#ffffff;
+  border-radius:13px;
+  padding:14px;
+  margin-top:16px;
+  font-size:15px;
+  font-weight:700;
+  cursor:pointer;
 }
 
 .df-logout-btn:hover {
-  background: #000000;
+  background:#000000;
 }
 
 .df-profile-note {
-  font-size: 12px;
-  color: #9ca3af;
-  margin-top: 16px;
+  font-size:12px;
+  color:#9ca3af;
+  margin-top:16px;
 }
 
 
-/* ================================
-   MOBILE PROFILE
-================================ */
+/* =================================
+   PROFILE CONTENT
+================================= */
 
-@media (max-width: 480px) {
+#df-content-body {
+  margin-top:20px;
+  text-align:left;
+  color:#374151;
+  font-size:14px;
+  line-height:1.6;
+}
+
+.df-info-box {
+  background:#f5f7fb;
+  border-radius:14px;
+  padding:15px;
+  margin-top:12px;
+}
+
+.df-info-label {
+  color:#6b7280;
+  font-size:12px;
+  margin-bottom:3px;
+}
+
+.df-info-value {
+  color:#111827;
+  font-weight:700;
+  word-break:break-word;
+}
+
+.df-empty-purchases {
+  text-align:center;
+  padding:25px 10px;
+  background:#f5f7fb;
+  border-radius:15px;
+}
+
+.df-empty-purchases-icon {
+  font-size:38px;
+  margin-bottom:10px;
+}
+
+.df-empty-purchases h3 {
+  margin:5px 0;
+  color:#111827;
+  font-size:17px;
+}
+
+.df-empty-purchases p {
+  margin:6px 0 0;
+  color:#6b7280;
+  font-size:13px;
+}
+
+
+/* =================================
+   MOBILE PROFILE
+================================= */
+
+@media (max-width:480px) {
 
   .df-profile-btn {
-    padding: 7px 9px;
-    font-size: 13px;
+    padding:7px 9px;
+    font-size:13px;
   }
 
   .df-profile-avatar-small {
-    width: 25px;
-    height: 25px;
+    width:25px;
+    height:25px;
   }
 
   .df-profile-box {
-    padding: 26px 18px;
+    padding:26px 18px;
   }
 
 }
 
 
-/* ================================
+/* =================================
    PAYMENT MODAL
-================================ */
+================================= */
 
 .df-overlay {
-  position: fixed;
-  inset: 0;
-  background: rgba(0,0,0,.65);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 20px;
-  z-index: 99999;
-  overflow-y: auto;
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,.65);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:20px;
+  z-index:99999;
+  overflow-y:auto;
 }
 
 .df-modal {
-  width: 100%;
-  max-width: 430px;
-  background: #ffffff;
-  border-radius: 24px;
-  padding: 28px 22px;
-  position: relative;
-  box-shadow: 0 20px 60px rgba(0,0,0,.25);
-  text-align: center;
-  font-family: Arial, sans-serif;
+  width:100%;
+  max-width:430px;
+  background:#ffffff;
+  border-radius:24px;
+  padding:28px 22px;
+  position:relative;
+  box-shadow:0 20px 60px rgba(0,0,0,.25);
+  text-align:center;
+  font-family:Arial,sans-serif;
 }
 
 .df-close {
-  position: absolute;
-  right: 15px;
-  top: 12px;
-  width: 35px;
-  height: 35px;
-  border: 0;
-  border-radius: 50%;
-  background: #f1f3f7;
-  font-size: 25px;
-  cursor: pointer;
+  position:absolute;
+  right:15px;
+  top:12px;
+  width:35px;
+  height:35px;
+  border:0;
+  border-radius:50%;
+  background:#f1f3f7;
+  font-size:25px;
+  cursor:pointer;
 }
 
 .df-logo {
-  width: 58px;
-  height: 58px;
-  border-radius: 16px;
-  background: #111827;
-  color: white;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-weight: bold;
-  font-size: 20px;
-  margin: 0 auto 16px;
+  width:58px;
+  height:58px;
+  border-radius:16px;
+  background:#111827;
+  color:white;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-weight:bold;
+  font-size:20px;
+  margin:0 auto 16px;
 }
 
 .df-modal h2 {
-  margin: 5px 0 10px;
-  color: #111827;
+  margin:5px 0 10px;
+  color:#111827;
 }
 
 .df-prompt-name {
-  color: #6b7280;
-  font-size: 15px;
-  margin-bottom: 12px;
+  color:#6b7280;
+  font-size:15px;
+  margin-bottom:12px;
 }
 
 .df-price {
-  font-size: 34px;
-  font-weight: 800;
-  color: #111827;
-  margin: 8px 0 0;
+  font-size:34px;
+  font-weight:800;
+  color:#111827;
+  margin:8px 0 0;
 }
 
 .df-small {
-  color: #777;
-  font-size: 12px;
-  margin: 7px 0 18px;
+  color:#777;
+  font-size:12px;
+  margin:7px 0 18px;
 }
 
 .df-payment-title {
-  text-align: left;
-  font-weight: 700;
-  margin: 20px 0 10px;
-  color: #111827;
+  text-align:left;
+  font-weight:700;
+  margin:20px 0 10px;
+  color:#111827;
 }
 
 .df-pay-option {
-  width: 100%;
-  border: 1px solid #e2e5ea;
-  background: #fff;
-  border-radius: 14px;
-  padding: 14px;
-  margin: 7px 0;
-  display: flex;
-  align-items: center;
-  gap: 13px;
-  text-align: left;
-  cursor: pointer;
-  font-size: 20px;
+  width:100%;
+  border:1px solid #e2e5ea;
+  background:#fff;
+  border-radius:14px;
+  padding:14px;
+  margin:7px 0;
+  display:flex;
+  align-items:center;
+  gap:13px;
+  text-align:left;
+  cursor:pointer;
+  font-size:20px;
 }
 
 .df-pay-option:hover {
-  background: #f7f8fb;
+  background:#f7f8fb;
 }
 
 .df-pay-option b {
-  display: block;
-  color: #111827;
-  font-size: 15px;
+  display:block;
+  color:#111827;
+  font-size:15px;
 }
 
 .df-pay-option small {
-  display: block;
-  color: #777;
-  font-size: 12px;
-  margin-top: 3px;
+  display:block;
+  color:#777;
+  font-size:12px;
+  margin-top:3px;
 }
 
 .df-demo-note {
-  margin-top: 18px;
-  padding: 10px;
-  background: #fff7ed;
-  border-radius: 10px;
-  color: #9a3412;
-  font-size: 12px;
+  margin-top:18px;
+  padding:10px;
+  background:#fff7ed;
+  border-radius:10px;
+  color:#9a3412;
+  font-size:12px;
 }
 
 .df-demo-box {
-  background: #f5f7fb;
-  border-radius: 16px;
-  padding: 20px 14px;
-  margin: 20px 0;
+  background:#f5f7fb;
+  border-radius:16px;
+  padding:20px 14px;
+  margin:20px 0;
 }
 
 .df-demo-icon {
-  font-size: 38px;
-  margin-bottom: 8px;
+  font-size:38px;
+  margin-bottom:8px;
 }
 
 .df-demo-box h3 {
-  font-size: 17px;
-  margin: 5px 0 8px;
-  color: #111827;
+  font-size:17px;
+  margin:5px 0 8px;
+  color:#111827;
 }
 
 .df-demo-box p {
-  color: #666;
-  font-size: 13px;
-  line-height: 1.5;
+  color:#666;
+  font-size:13px;
+  line-height:1.5;
 }
 
 .df-demo-success,
 .df-copy-button {
-  width: 100%;
-  border: none;
-  border-radius: 13px;
-  padding: 15px;
-  background: #111827;
-  color: white;
-  font-size: 16px;
-  font-weight: 700;
-  cursor: pointer;
-  margin-top: 8px;
+  width:100%;
+  border:none;
+  border-radius:13px;
+  padding:15px;
+  background:#111827;
+  color:white;
+  font-size:16px;
+  font-weight:700;
+  cursor:pointer;
+  margin-top:8px;
 }
 
 .df-success {
-  width: 65px;
-  height: 65px;
-  border-radius: 50%;
-  background: #dcfce7;
-  color: #16a34a;
-  font-size: 35px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin: 0 auto 15px;
+  width:65px;
+  height:65px;
+  border-radius:50%;
+  background:#dcfce7;
+  color:#16a34a;
+  font-size:35px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  margin:0 auto 15px;
 }
 
 .df-ai {
-  background: #f3f4f6;
-  padding: 10px;
-  border-radius: 10px;
-  margin: 15px 0;
-  font-size: 13px;
+  background:#f3f4f6;
+  padding:10px;
+  border-radius:10px;
+  margin:15px 0;
+  font-size:13px;
 }
 
 .df-prompt-box {
-  width: 100%;
-  min-height: 230px;
-  box-sizing: border-box;
-  border: 1px solid #ddd;
-  border-radius: 13px;
-  padding: 14px;
-  font-size: 13px;
-  line-height: 1.5;
-  resize: vertical;
-  background: #fafafa;
-  color: #222;
-  outline: none;
-  text-align: left;
+  width:100%;
+  min-height:230px;
+  box-sizing:border-box;
+  border:1px solid #ddd;
+  border-radius:13px;
+  padding:14px;
+  font-size:13px;
+  line-height:1.5;
+  resize:vertical;
+  background:#fafafa;
+  color:#222;
+  outline:none;
+  text-align:left;
 }
 
 .df-copy-message {
-  color: #16a34a;
-  font-size: 13px;
-  font-weight: 600;
-  min-height: 18px;
-  margin-top: 10px;
+  color:#16a34a;
+  font-size:13px;
+  font-weight:600;
+  min-height:18px;
+  margin-top:10px;
 }
 
-@media (max-width: 480px) {
+@media (max-width:480px) {
 
   .df-overlay {
-    padding: 12px;
+    padding:12px;
   }
 
   .df-modal {
-    padding: 25px 17px;
-    border-radius: 20px;
+    padding:25px 17px;
+    border-radius:20px;
   }
 
   .df-prompt-box {
-    min-height: 250px;
+    min-height:250px;
   }
 
 }
 
 </style>
+
 </head>
 
 
 <body>
+
+
+<!-- =================================
+     HEADER
+================================= -->
 
 <header class="topbar">
 
@@ -518,16 +585,21 @@ content="Dhramvir Finds — viral AI reel, image and cinematic prompts.">
     </div>
 
     <div>
+
       <b>Dhramvir Finds</b>
-      <small>Viral AI Prompts</small>
+
+      <small>
+        Viral AI Prompts
+      </small>
+
     </div>
 
   </div>
 
 
-  <!-- CUSTOMER PROFILE BUTTON -->
-
-  <div id="df-profile-area" class="df-profile-area">
+  <div
+    id="df-profile-area"
+    class="df-profile-area">
 
     <button
       id="df-profile-btn"
@@ -543,7 +615,13 @@ content="Dhramvir Finds — viral AI reel, image and cinematic prompts.">
 </header>
 
 
+
+<!-- =================================
+     MAIN
+================================= -->
+
 <main>
+
 
 <section class="hero">
 
@@ -571,7 +649,10 @@ content="Dhramvir Finds — viral AI reel, image and cinematic prompts.">
 </section>
 
 
-<section id="prompts" class="section">
+
+<section
+  id="prompts"
+  class="section">
 
   <div class="head">
 
@@ -584,6 +665,7 @@ content="Dhramvir Finds — viral AI reel, image and cinematic prompts.">
     </p>
 
   </div>
+
 
 
   <div class="grid">
@@ -621,6 +703,7 @@ content="Dhramvir Finds — viral AI reel, image and cinematic prompts.">
     </article>
 
 
+
     <article class="card">
 
       <div class="thumb">
@@ -651,6 +734,7 @@ content="Dhramvir Finds — viral AI reel, image and cinematic prompts.">
       </div>
 
     </article>
+
 
 
     <article class="card">
@@ -685,6 +769,7 @@ content="Dhramvir Finds — viral AI reel, image and cinematic prompts.">
     </article>
 
 
+
     <article class="card">
 
       <div class="thumb">
@@ -715,6 +800,7 @@ content="Dhramvir Finds — viral AI reel, image and cinematic prompts.">
       </div>
 
     </article>
+
 
 
     <article class="card">
@@ -754,6 +840,7 @@ content="Dhramvir Finds — viral AI reel, image and cinematic prompts.">
 </section>
 
 
+
 <section class="how">
 
   <h2>
@@ -781,8 +868,14 @@ content="Dhramvir Finds — viral AI reel, image and cinematic prompts.">
 
 </section>
 
+
 </main>
 
+
+
+<!-- =================================
+     FOOTER
+================================= -->
 
 <footer>
 
@@ -798,9 +891,9 @@ content="Dhramvir Finds — viral AI reel, image and cinematic prompts.">
 
 
 
-<!-- ==================================
+<!-- =================================
      LOGIN MODAL
-================================== -->
+================================= -->
 
 <div
   id="loginModal"
@@ -866,9 +959,9 @@ content="Dhramvir Finds — viral AI reel, image and cinematic prompts.">
 
 
 
-<!-- ==================================
+<!-- =================================
      CUSTOMER PROFILE MODAL
-================================== -->
+================================= -->
 
 <div
   id="df-profile-modal"
@@ -913,6 +1006,7 @@ content="Dhramvir Finds — viral AI reel, image and cinematic prompts.">
 
 
     <button
+      id="df-my-profile"
       class="df-profile-option"
       type="button">
 
@@ -922,6 +1016,7 @@ content="Dhramvir Finds — viral AI reel, image and cinematic prompts.">
 
 
     <button
+      id="df-unlocked-prompts"
       class="df-profile-option"
       type="button">
 
@@ -931,6 +1026,7 @@ content="Dhramvir Finds — viral AI reel, image and cinematic prompts.">
 
 
     <button
+      id="df-my-purchases"
       class="df-profile-option"
       type="button">
 
@@ -940,6 +1036,7 @@ content="Dhramvir Finds — viral AI reel, image and cinematic prompts.">
 
 
     <button
+      id="df-account-settings"
       class="df-profile-option"
       type="button">
 
@@ -970,16 +1067,56 @@ content="Dhramvir Finds — viral AI reel, image and cinematic prompts.">
 
 
 
-<!-- ==================================
+<!-- =================================
+     PROFILE CONTENT MODAL
+================================= -->
+
+<div
+  id="df-content-modal"
+  class="df-profile-overlay">
+
+  <div class="df-profile-box">
+
+
+    <button
+      id="df-content-close"
+      class="df-profile-close"
+      type="button">
+
+      ×
+
+    </button>
+
+
+    <h2
+      id="df-content-title"
+      class="df-profile-name">
+
+      My Profile
+
+    </h2>
+
+
+    <div
+      id="df-content-body">
+
+    </div>
+
+
+  </div>
+
+</div>
+
+
+
+<!-- =================================
      SUPABASE
-================================== -->
+================================= -->
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 
 <script>
-
-/* Supabase configuration */
 
 const SUPABASE_URL =
   "https://vtpwmzwnhlukcxoinhug.supabase.co";
@@ -999,28 +1136,28 @@ const supabaseClient =
 
 
 
-<!-- ==================================
+<!-- =================================
      YOUR WEBSITE SCRIPT
-================================== -->
+================================= -->
 
 <script src="script.js"></script>
 
 
 
-<!-- ==================================
+<!-- =================================
      LOGIN + CUSTOMER PROFILE SYSTEM
-================================== -->
+================================= -->
 
 <script>
 
 document.addEventListener(
   "DOMContentLoaded",
-  async function () {
+  async function() {
 
 
-    /* -----------------------------
-       GET ELEMENTS
-    ----------------------------- */
+    /* =================================
+       ELEMENTS
+    ================================= */
 
     const getStartedBtn =
       document.getElementById(
@@ -1094,16 +1231,62 @@ document.addEventListener(
       );
 
 
+    const myProfileBtn =
+      document.getElementById(
+        "df-my-profile"
+      );
 
-    /* -----------------------------
+
+    const unlockedPromptsBtn =
+      document.getElementById(
+        "df-unlocked-prompts"
+      );
+
+
+    const purchasesBtn =
+      document.getElementById(
+        "df-my-purchases"
+      );
+
+
+    const accountSettingsBtn =
+      document.getElementById(
+        "df-account-settings"
+      );
+
+
+    const contentModal =
+      document.getElementById(
+        "df-content-modal"
+      );
+
+
+    const contentClose =
+      document.getElementById(
+        "df-content-close"
+      );
+
+
+    const contentTitle =
+      document.getElementById(
+        "df-content-title"
+      );
+
+
+    const contentBody =
+      document.getElementById(
+        "df-content-body"
+      );
+
+
+
+    /* =================================
        SHOW CUSTOMER PROFILE
-    ----------------------------- */
+    ================================= */
 
     function showCustomerProfile(user) {
 
-      if (!user) {
-        return;
-      }
+      if (!user) return;
 
 
       const metadata =
@@ -1160,9 +1343,9 @@ document.addEventListener(
 
 
 
-    /* -----------------------------
+    /* =================================
        HIDE CUSTOMER PROFILE
-    ----------------------------- */
+    ================================= */
 
     function hideCustomerProfile() {
 
@@ -1172,13 +1355,35 @@ document.addEventListener(
       profileModal.style.display =
         "none";
 
+      contentModal.style.display =
+        "none";
+
     }
 
 
 
-    /* -----------------------------
+    /* =================================
+       CONTENT MODAL
+    ================================= */
+
+    function openContent(title, html) {
+
+      contentTitle.innerText =
+        title;
+
+      contentBody.innerHTML =
+        html;
+
+      contentModal.style.display =
+        "flex";
+
+    }
+
+
+
+    /* =================================
        CHECK CURRENT LOGIN
-    ----------------------------- */
+    ================================= */
 
     const {
       data: sessionData
@@ -1203,15 +1408,12 @@ document.addEventListener(
 
 
 
-    /* -----------------------------
+    /* =================================
        AUTH STATE CHANGE
-    ----------------------------- */
+    ================================= */
 
     supabaseClient.auth.onAuthStateChange(
-      function (
-        event,
-        session
-      ) {
+      function(event, session) {
 
         if (
           session &&
@@ -1236,16 +1438,15 @@ document.addEventListener(
 
 
 
-    /* -----------------------------
+    /* =================================
        GET STARTED
-    ----------------------------- */
+    ================================= */
 
     if (getStartedBtn) {
 
       getStartedBtn.addEventListener(
         "click",
-        async function () {
-
+        async function() {
 
           const {
             data
@@ -1262,10 +1463,8 @@ document.addEventListener(
               data.session.user
             );
 
-
             profileModal.style.display =
               "flex";
-
 
           } else {
 
@@ -1281,15 +1480,15 @@ document.addEventListener(
 
 
 
-    /* -----------------------------
+    /* =================================
        CLOSE LOGIN
-    ----------------------------- */
+    ================================= */
 
     if (closeLoginBtn) {
 
       closeLoginBtn.addEventListener(
         "click",
-        function () {
+        function() {
 
           loginModal.style.display =
             "none";
@@ -1301,15 +1500,15 @@ document.addEventListener(
 
 
 
-    /* -----------------------------
+    /* =================================
        CLOSE LOGIN OUTSIDE
-    ----------------------------- */
+    ================================= */
 
     if (loginModal) {
 
       loginModal.addEventListener(
         "click",
-        function (event) {
+        function(event) {
 
           if (
             event.target ===
@@ -1328,16 +1527,15 @@ document.addEventListener(
 
 
 
-    /* -----------------------------
+    /* =================================
        GOOGLE LOGIN
-    ----------------------------- */
+    ================================= */
 
     if (googleLoginBtn) {
 
       googleLoginBtn.addEventListener(
         "click",
-        async function () {
-
+        async function() {
 
           googleLoginBtn.disabled =
             true;
@@ -1349,15 +1547,14 @@ document.addEventListener(
 
           try {
 
-
             const {
               error
             } =
               await supabaseClient.auth.signInWithOAuth({
 
-                provider: "google",
+                provider:"google",
 
-                options: {
+                options:{
 
                   redirectTo:
                     "https://dhramvirfinds-ai-prompts.github.io/Dhramvir-Finds/"
@@ -1370,7 +1567,6 @@ document.addEventListener(
             if (error) {
 
               console.error(error);
-
 
               alert(
                 "Google Login error: " +
@@ -1388,10 +1584,9 @@ document.addEventListener(
             }
 
 
-          } catch (error) {
+          } catch(error) {
 
             console.error(error);
-
 
             alert(
               "Google Login start nahi ho paya."
@@ -1414,15 +1609,15 @@ document.addEventListener(
 
 
 
-    /* -----------------------------
+    /* =================================
        MOBILE LOGIN
-    ----------------------------- */
+    ================================= */
 
     if (mobileLoginBtn) {
 
       mobileLoginBtn.addEventListener(
         "click",
-        function () {
+        function() {
 
           alert(
             "Mobile OTP login ko agle step mein connect karenge."
@@ -1435,15 +1630,15 @@ document.addEventListener(
 
 
 
-    /* -----------------------------
+    /* =================================
        OPEN PROFILE
-    ----------------------------- */
+    ================================= */
 
     if (profileBtn) {
 
       profileBtn.addEventListener(
         "click",
-        function () {
+        function() {
 
           profileModal.style.display =
             "flex";
@@ -1455,15 +1650,15 @@ document.addEventListener(
 
 
 
-    /* -----------------------------
+    /* =================================
        CLOSE PROFILE
-    ----------------------------- */
+    ================================= */
 
     if (profileClose) {
 
       profileClose.addEventListener(
         "click",
-        function () {
+        function() {
 
           profileModal.style.display =
             "none";
@@ -1475,15 +1670,15 @@ document.addEventListener(
 
 
 
-    /* -----------------------------
+    /* =================================
        CLOSE PROFILE OUTSIDE
-    ----------------------------- */
+    ================================= */
 
     if (profileModal) {
 
       profileModal.addEventListener(
         "click",
-        function (event) {
+        function(event) {
 
           if (
             event.target ===
@@ -1502,16 +1697,314 @@ document.addEventListener(
 
 
 
-    /* -----------------------------
+    /* =================================
+       MY PROFILE
+    ================================= */
+
+    if (myProfileBtn) {
+
+      myProfileBtn.addEventListener(
+        "click",
+        async function() {
+
+          const {
+            data
+          } =
+            await supabaseClient.auth.getUser();
+
+
+          const user =
+            data.user;
+
+
+          if (!user) {
+
+            alert(
+              "Please login first."
+            );
+
+            return;
+
+          }
+
+
+          const metadata =
+            user.user_metadata || {};
+
+
+          const name =
+            metadata.full_name ||
+            metadata.name ||
+            "Customer";
+
+
+          const email =
+            user.email ||
+            "Not available";
+
+
+          openContent(
+
+            "👤 My Profile",
+
+            `
+
+            <div class="df-info-box">
+
+              <div class="df-info-label">
+                Name
+              </div>
+
+              <div class="df-info-value">
+                ${name}
+              </div>
+
+            </div>
+
+
+            <div class="df-info-box">
+
+              <div class="df-info-label">
+                Email
+              </div>
+
+              <div class="df-info-value">
+                ${email}
+              </div>
+
+            </div>
+
+
+            <div class="df-info-box">
+
+              <div class="df-info-label">
+                Login method
+              </div>
+
+              <div class="df-info-value">
+                Google Account
+              </div>
+
+            </div>
+
+            `
+
+          );
+
+        }
+      );
+
+    }
+
+
+
+    /* =================================
+       MY UNLOCKED PROMPTS
+    ================================= */
+
+    if (unlockedPromptsBtn) {
+
+      unlockedPromptsBtn.addEventListener(
+        "click",
+        function() {
+
+          openContent(
+
+            "🔓 My Unlocked Prompts",
+
+            `
+
+            <div class="df-empty-purchases">
+
+              <div class="df-empty-purchases-icon">
+                🔓
+              </div>
+
+              <h3>
+                No unlocked prompts yet
+              </h3>
+
+              <p>
+                Your unlocked prompts will appear here after purchase.
+              </p>
+
+            </div>
+
+            `
+
+          );
+
+        }
+      );
+
+    }
+
+
+
+    /* =================================
+       MY PURCHASES
+    ================================= */
+
+    if (purchasesBtn) {
+
+      purchasesBtn.addEventListener(
+        "click",
+        function() {
+
+          openContent(
+
+            "🎫 My Purchases",
+
+            `
+
+            <div class="df-empty-purchases">
+
+              <div class="df-empty-purchases-icon">
+                🛒
+              </div>
+
+              <h3>
+                No purchases yet
+              </h3>
+
+              <p>
+                Your purchased prompts will appear here after a successful purchase.
+              </p>
+
+            </div>
+
+            `
+
+          );
+
+        }
+      );
+
+    }
+
+
+
+    /* =================================
+       ACCOUNT SETTINGS
+    ================================= */
+
+    if (accountSettingsBtn) {
+
+      accountSettingsBtn.addEventListener(
+        "click",
+        function() {
+
+          openContent(
+
+            "⚙️ Account Settings",
+
+            `
+
+            <div class="df-info-box">
+
+              <div class="df-info-label">
+                Account
+              </div>
+
+              <div class="df-info-value">
+                Connected with Google
+              </div>
+
+            </div>
+
+
+            <div class="df-info-box">
+
+              <div class="df-info-label">
+                Payment
+              </div>
+
+              <div class="df-info-value">
+                Razorpay will be connected later
+              </div>
+
+            </div>
+
+
+            <div class="df-info-box">
+
+              <div class="df-info-label">
+                Purchases
+              </div>
+
+              <div class="df-info-value">
+                Purchases will be linked to this account
+              </div>
+
+            </div>
+
+            `
+
+          );
+
+        }
+      );
+
+    }
+
+
+
+    /* =================================
+       CLOSE CONTENT
+    ================================= */
+
+    if (contentClose) {
+
+      contentClose.addEventListener(
+        "click",
+        function() {
+
+          contentModal.style.display =
+            "none";
+
+        }
+      );
+
+    }
+
+
+
+    /* =================================
+       CLOSE CONTENT OUTSIDE
+    ================================= */
+
+    if (contentModal) {
+
+      contentModal.addEventListener(
+        "click",
+        function(event) {
+
+          if (
+            event.target ===
+            contentModal
+          ) {
+
+            contentModal.style.display =
+              "none";
+
+          }
+
+        }
+      );
+
+    }
+
+
+
+    /* =================================
        LOGOUT
-    ----------------------------- */
+    ================================= */
 
     if (logoutBtn) {
 
       logoutBtn.addEventListener(
         "click",
-        async function () {
-
+        async function() {
 
           const {
             error
@@ -1523,11 +2016,9 @@ document.addEventListener(
 
             console.error(error);
 
-
             alert(
               "Logout nahi ho paya."
             );
-
 
             return;
 
@@ -1535,6 +2026,10 @@ document.addEventListener(
 
 
           profileModal.style.display =
+            "none";
+
+
+          contentModal.style.display =
             "none";
 
 
@@ -1556,5 +2051,6 @@ document.addEventListener(
 
 </script>
 
+
 </body>
-</html>
+   </html>
