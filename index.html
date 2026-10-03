@@ -1,9 +1,14 @@
 <!doctype html>
 <html lang="en">
+
 <head>
 
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<meta
+  name="viewport"
+  content="width=device-width,initial-scale=1"
+>
 
 <title>Dhramvir Finds — Viral AI Prompts</title>
 
@@ -171,7 +176,7 @@
 
 .df-profile-box {
   width:100%;
-  max-width:400px;
+  max-width:420px;
   background:#ffffff;
   border-radius:24px;
   padding:28px 22px;
@@ -311,6 +316,165 @@
   margin:6px 0 0;
   color:#6b7280;
   font-size:13px;
+}
+
+
+/* =================================
+   HELP CENTER
+================================= */
+
+.df-help-card {
+  background:#f5f7fb;
+  border-radius:16px;
+  padding:16px;
+  margin-top:12px;
+}
+
+.df-help-card h3 {
+  margin:0 0 7px;
+  color:#111827;
+  font-size:17px;
+}
+
+.df-help-card p {
+  margin:5px 0;
+  color:#6b7280;
+  font-size:13px;
+  line-height:1.5;
+}
+
+.df-help-email {
+  display:block;
+  margin-top:10px;
+  color:#111827;
+  font-weight:800;
+  text-decoration:none;
+  word-break:break-word;
+}
+
+.df-help-form {
+  margin-top:18px;
+}
+
+.df-help-input,
+.df-help-textarea {
+  width:100%;
+  box-sizing:border-box;
+  border:1px solid #dfe3e8;
+  background:#ffffff;
+  border-radius:13px;
+  padding:13px;
+  font-size:14px;
+  outline:none;
+  margin-top:9px;
+  font-family:inherit;
+}
+
+.df-help-textarea {
+  min-height:130px;
+  resize:vertical;
+}
+
+.df-help-input:focus,
+.df-help-textarea:focus {
+  border-color:#111827;
+}
+
+.df-help-submit {
+  width:100%;
+  border:0;
+  background:#111827;
+  color:#fff;
+  border-radius:13px;
+  padding:14px;
+  margin-top:12px;
+  font-size:15px;
+  font-weight:700;
+  cursor:pointer;
+}
+
+.df-help-submit:disabled {
+  opacity:.6;
+  cursor:not-allowed;
+}
+
+.df-help-message {
+  min-height:20px;
+  margin-top:10px;
+  font-size:13px;
+  font-weight:600;
+  text-align:center;
+}
+
+.df-help-success {
+  color:#16a34a;
+}
+
+.df-help-error {
+  color:#dc2626;
+}
+
+
+/* =================================
+   TICKET LIST
+================================= */
+
+.df-ticket-item {
+  background:#f5f7fb;
+  border-radius:15px;
+  padding:15px;
+  margin-top:10px;
+}
+
+.df-ticket-subject {
+  font-size:15px;
+  font-weight:800;
+  color:#111827;
+  margin-bottom:7px;
+}
+
+.df-ticket-message {
+  font-size:13px;
+  color:#4b5563;
+  line-height:1.5;
+  white-space:pre-wrap;
+}
+
+.df-ticket-meta {
+  font-size:11px;
+  color:#9ca3af;
+  margin-top:10px;
+}
+
+.df-ticket-status {
+  display:inline-block;
+  padding:5px 9px;
+  border-radius:999px;
+  background:#e5e7eb;
+  color:#374151;
+  font-size:11px;
+  font-weight:800;
+  margin-top:8px;
+}
+
+.df-ticket-reply {
+  margin-top:10px;
+  padding:11px;
+  border-radius:11px;
+  background:#ffffff;
+  border:1px solid #e5e7eb;
+}
+
+.df-ticket-reply strong {
+  display:block;
+  color:#111827;
+  margin-bottom:4px;
+}
+
+.df-ticket-reply span {
+  color:#4b5563;
+  font-size:13px;
+  white-space:pre-wrap;
 }
 
 
@@ -1046,6 +1210,16 @@
 
 
     <button
+      id="df-help-center"
+      class="df-profile-option"
+      type="button">
+
+      🆘 Help Center
+
+    </button>
+
+
+    <button
       id="df-logout-btn"
       class="df-logout-btn"
       type="button">
@@ -1145,7 +1319,7 @@ const supabaseClient =
 
 
 <!-- =================================
-     LOGIN + CUSTOMER PROFILE SYSTEM
+     LOGIN + CUSTOMER PROFILE + HELP CENTER
 ================================= -->
 
 <script>
@@ -1255,6 +1429,12 @@ document.addEventListener(
       );
 
 
+    const helpCenterBtn =
+      document.getElementById(
+        "df-help-center"
+      );
+
+
     const contentModal =
       document.getElementById(
         "df-content-modal"
@@ -1277,6 +1457,48 @@ document.addEventListener(
       document.getElementById(
         "df-content-body"
       );
+
+
+
+    /* =================================
+       ESCAPE HTML
+    ================================= */
+
+    function escapeHtml(value) {
+
+      return String(value || "")
+        .replace(/&/g,"&amp;")
+        .replace(/</g,"&lt;")
+        .replace(/>/g,"&gt;")
+        .replace(/"/g,"&quot;")
+        .replace(/'/g,"&#039;");
+
+    }
+
+
+
+    /* =================================
+       DATE FORMAT
+    ================================= */
+
+    function formatDate(value) {
+
+      if (!value) {
+        return "";
+      }
+
+      try {
+
+        return new Date(value)
+          .toLocaleString();
+
+      } catch(error) {
+
+        return value;
+
+      }
+
+    }
 
 
 
@@ -1328,7 +1550,7 @@ document.addEventListener(
 
         <img
           class="df-profile-avatar-small"
-          src="${avatar}"
+          src="${escapeHtml(avatar)}"
           alt="Profile">
 
         <span>Profile</span>
@@ -1376,6 +1598,698 @@ document.addEventListener(
 
       contentModal.style.display =
         "flex";
+
+    }
+
+
+
+    /* =================================
+       GET CURRENT USER
+    ================================= */
+
+    async function getCurrentUser() {
+
+      const {
+        data,
+        error
+      } =
+        await supabaseClient.auth.getUser();
+
+
+      if (error) {
+
+        console.error(error);
+
+        return null;
+
+      }
+
+
+      return data.user || null;
+
+    }
+
+
+
+    /* =================================
+       LOAD SITE SETTINGS
+    ================================= */
+
+    async function getSiteSettings() {
+
+      const fallback = {
+
+        site_name:
+          "Dhramvir Finds",
+
+        support_email:
+          "Dhramvirfinds@gmail.com",
+
+        support_phone:
+          ""
+
+      };
+
+
+      try {
+
+        const {
+          data,
+          error
+        } =
+          await supabaseClient
+            .from("site_settings")
+            .select(
+              "id,site_name,support_email,support_phone"
+            )
+            .eq("id",1)
+            .maybeSingle();
+
+
+        if (error) {
+
+          console.error(
+            "site_settings error:",
+            error
+          );
+
+          return fallback;
+
+        }
+
+
+        return {
+
+          site_name:
+            data?.site_name ||
+            fallback.site_name,
+
+          support_email:
+            data?.support_email ||
+            fallback.support_email,
+
+          support_phone:
+            data?.support_phone ||
+            fallback.support_phone
+
+        };
+
+      } catch(error) {
+
+        console.error(error);
+
+        return fallback;
+
+      }
+
+    }
+
+
+
+    /* =================================
+       HELP CENTER
+    ================================= */
+
+    async function openHelpCenter() {
+
+      const user =
+        await getCurrentUser();
+
+
+      if (!user) {
+
+        loginModal.style.display =
+          "flex";
+
+        return;
+
+      }
+
+
+      const settings =
+        await getSiteSettings();
+
+
+      const supportEmail =
+        settings.support_email ||
+        "Dhramvirfinds@gmail.com";
+
+
+      const supportPhone =
+        settings.support_phone || "";
+
+
+      openContent(
+
+        "🆘 Help Center",
+
+        `
+
+        <div class="df-help-card">
+
+          <h3>
+            Need help?
+          </h3>
+
+          <p>
+            If you are having a problem with a prompt,
+            payment or your account, contact our support team.
+          </p>
+
+          <a
+            class="df-help-email"
+            href="mailto:${escapeHtml(supportEmail)}">
+
+            ✉️ ${escapeHtml(supportEmail)}
+
+          </a>
+
+          ${
+            supportPhone
+            ?
+            `
+            <p>
+              📞 ${escapeHtml(supportPhone)}
+            </p>
+            `
+            :
+            ""
+          }
+
+        </div>
+
+
+        <div class="df-help-card">
+
+          <h3>
+            🎫 Contact Support
+          </h3>
+
+          <p>
+            Send us your problem and our support team can review it.
+          </p>
+
+
+          <form
+            id="df-support-form"
+            class="df-help-form">
+
+
+            <input
+              id="df-ticket-subject"
+              class="df-help-input"
+              type="text"
+              placeholder="Subject"
+              maxlength="150"
+              required
+            >
+
+
+            <textarea
+              id="df-ticket-message"
+              class="df-help-textarea"
+              placeholder="Describe your problem..."
+              maxlength="3000"
+              required
+            ></textarea>
+
+
+            <button
+              id="df-ticket-submit"
+              class="df-help-submit"
+              type="submit">
+
+              Send Support Ticket
+
+            </button>
+
+
+            <div
+              id="df-ticket-message-status"
+              class="df-help-message">
+
+            </div>
+
+
+          </form>
+
+        </div>
+
+
+        <button
+          id="df-view-my-tickets"
+          class="df-profile-option"
+          type="button">
+
+          🎫 My Support Tickets
+
+        </button>
+
+        `
+
+      );
+
+
+      const supportForm =
+        document.getElementById(
+          "df-support-form"
+        );
+
+
+      const ticketsButton =
+        document.getElementById(
+          "df-view-my-tickets"
+        );
+
+
+      if (supportForm) {
+
+        supportForm.addEventListener(
+          "submit",
+          async function(event) {
+
+            event.preventDefault();
+
+
+            const subjectInput =
+              document.getElementById(
+                "df-ticket-subject"
+              );
+
+
+            const messageInput =
+              document.getElementById(
+                "df-ticket-message"
+              );
+
+
+            const submitButton =
+              document.getElementById(
+                "df-ticket-submit"
+              );
+
+
+            const statusBox =
+              document.getElementById(
+                "df-ticket-message-status"
+              );
+
+
+            const subject =
+              subjectInput.value.trim();
+
+
+            const message =
+              messageInput.value.trim();
+
+
+            if (!subject || !message) {
+
+              statusBox.className =
+                "df-help-message df-help-error";
+
+              statusBox.innerText =
+                "Please enter subject and message.";
+
+              return;
+
+            }
+
+
+            submitButton.disabled =
+              true;
+
+            submitButton.innerText =
+              "Sending...";
+
+
+            statusBox.className =
+              "df-help-message";
+
+            statusBox.innerText =
+              "";
+
+
+            const currentUser =
+              await getCurrentUser();
+
+
+            if (!currentUser) {
+
+              submitButton.disabled =
+                false;
+
+              submitButton.innerText =
+                "Send Support Ticket";
+
+
+              loginModal.style.display =
+                "flex";
+
+              return;
+
+            }
+
+
+            const now =
+              new Date().toISOString();
+
+
+            const {
+              error
+            } =
+              await supabaseClient
+                .from("support_tickets")
+                .insert({
+
+                  user_id:
+                    currentUser.id,
+
+                  subject:
+                    subject,
+
+                  message:
+                    message,
+
+                  status:
+                    "open",
+
+                  admin_reply:
+                    null,
+
+                  created_at:
+                    now,
+
+                  updated_at:
+                    now
+
+                });
+
+
+            if (error) {
+
+              console.error(
+                "support ticket error:",
+                error
+              );
+
+
+              statusBox.className =
+                "df-help-message df-help-error";
+
+
+              statusBox.innerText =
+                "Ticket send nahi ho paya. Please try again.";
+
+
+              submitButton.disabled =
+                false;
+
+
+              submitButton.innerText =
+                "Send Support Ticket";
+
+
+              return;
+
+            }
+
+
+            subjectInput.value =
+              "";
+
+
+            messageInput.value =
+              "";
+
+
+            statusBox.className =
+              "df-help-message df-help-success";
+
+
+            statusBox.innerText =
+              "✓ Support ticket successfully sent.";
+
+
+            submitButton.disabled =
+              false;
+
+
+            submitButton.innerText =
+              "Send Support Ticket";
+
+          }
+        );
+
+      }
+
+
+      if (ticketsButton) {
+
+        ticketsButton.addEventListener(
+          "click",
+          function() {
+
+            loadMyTickets();
+
+          }
+        );
+
+      }
+
+    }
+
+
+
+    /* =================================
+       MY SUPPORT TICKETS
+    ================================= */
+
+    async function loadMyTickets() {
+
+      const user =
+        await getCurrentUser();
+
+
+      if (!user) {
+
+        loginModal.style.display =
+          "flex";
+
+        return;
+
+      }
+
+
+      openContent(
+
+        "🎫 My Support Tickets",
+
+        `
+
+        <div class="df-empty-purchases">
+
+          <div class="df-empty-purchases-icon">
+            ⏳
+          </div>
+
+          <h3>
+            Loading tickets...
+          </h3>
+
+        </div>
+
+        `
+
+      );
+
+
+      const {
+        data,
+        error
+      } =
+        await supabaseClient
+          .from("support_tickets")
+          .select(
+            "id,subject,message,status,admin_reply,created_at,updated_at"
+          )
+          .eq(
+            "user_id",
+            user.id
+          )
+          .order(
+            "created_at",
+            {
+              ascending:false
+            }
+          );
+
+
+      if (error) {
+
+        console.error(
+          "ticket loading error:",
+          error
+        );
+
+
+        contentBody.innerHTML = `
+
+          <div class="df-empty-purchases">
+
+            <div class="df-empty-purchases-icon">
+              ⚠️
+            </div>
+
+            <h3>
+              Tickets load nahi ho paye
+            </h3>
+
+            <p>
+              Please try again later.
+            </p>
+
+          </div>
+
+        `;
+
+        return;
+
+      }
+
+
+      if (!data || data.length === 0) {
+
+        contentBody.innerHTML = `
+
+          <div class="df-empty-purchases">
+
+            <div class="df-empty-purchases-icon">
+              🎫
+            </div>
+
+            <h3>
+              No support tickets yet
+            </h3>
+
+            <p>
+              When you contact support, your tickets will appear here.
+            </p>
+
+          </div>
+
+        `;
+
+        return;
+
+      }
+
+
+      let html = "";
+
+
+      data.forEach(function(ticket) {
+
+        const status =
+          ticket.status ||
+          "open";
+
+
+        let statusText =
+          status;
+
+
+        if (status === "in_progress") {
+
+          statusText =
+            "In Progress";
+
+        } else if (status === "resolved") {
+
+          statusText =
+            "Resolved";
+
+        } else if (status === "closed") {
+
+          statusText =
+            "Closed";
+
+        } else if (status === "open") {
+
+          statusText =
+            "Open";
+
+        }
+
+
+        html += `
+
+          <div class="df-ticket-item">
+
+            <div class="df-ticket-subject">
+
+              ${escapeHtml(ticket.subject)}
+
+            </div>
+
+
+            <div class="df-ticket-message">
+
+              ${escapeHtml(ticket.message)}
+
+            </div>
+
+
+            <div>
+
+              <span class="df-ticket-status">
+
+                ${escapeHtml(statusText)}
+
+              </span>
+
+            </div>
+
+
+            <div class="df-ticket-meta">
+
+              Created:
+              ${escapeHtml(
+                formatDate(ticket.created_at)
+              )}
+
+            </div>
+
+
+            ${
+              ticket.admin_reply
+              ?
+              `
+              <div class="df-ticket-reply">
+
+                <strong>
+                  Support Reply
+                </strong>
+
+                <span>
+                  ${escapeHtml(ticket.admin_reply)}
+                </span>
+
+              </div>
+              `
+              :
+              ""
+            }
+
+          </div>
+
+        `;
+
+      });
+
+
+      contentBody.innerHTML =
+        html;
 
     }
 
@@ -1707,14 +2621,8 @@ document.addEventListener(
         "click",
         async function() {
 
-          const {
-            data
-          } =
-            await supabaseClient.auth.getUser();
-
-
           const user =
-            data.user;
+            await getCurrentUser();
 
 
           if (!user) {
@@ -1756,7 +2664,7 @@ document.addEventListener(
               </div>
 
               <div class="df-info-value">
-                ${name}
+                ${escapeHtml(name)}
               </div>
 
             </div>
@@ -1769,7 +2677,7 @@ document.addEventListener(
               </div>
 
               <div class="df-info-value">
-                ${email}
+                ${escapeHtml(email)}
               </div>
 
             </div>
@@ -1950,6 +2858,25 @@ document.addEventListener(
 
 
     /* =================================
+       HELP CENTER BUTTON
+    ================================= */
+
+    if (helpCenterBtn) {
+
+      helpCenterBtn.addEventListener(
+        "click",
+        async function() {
+
+          await openHelpCenter();
+
+        }
+      );
+
+    }
+
+
+
+    /* =================================
        CLOSE CONTENT
     ================================= */
 
@@ -2053,4 +2980,5 @@ document.addEventListener(
 
 
 </body>
-   </html>
+
+  </html>
