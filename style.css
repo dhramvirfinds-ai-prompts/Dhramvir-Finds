@@ -1,1 +1,936 @@
-*{box-sizing:border-box}body{margin:0;font-family:Arial,sans-serif;background:#f7f9fc;color:#111827}.topbar{background:#fff;border-bottom:1px solid #e5e7eb;padding:14px 18px}.brand{display:flex;align-items:center;gap:10px;max-width:1000px;margin:auto}.logo{width:42px;height:42px;border-radius:12px;background:#111827;color:#fff;display:grid;place-items:center;font-weight:800}.brand small{display:block;color:#6b7280;font-size:12px;margin-top:2px}.hero{text-align:center;max-width:850px;margin:auto;padding:58px 20px 45px}.badge{display:inline-block;background:#fff;border:1px solid #e5e7eb;border-radius:999px;padding:8px 13px;font-size:13px}.hero h1{font-size:clamp(34px,8vw,58px);line-height:1.05;margin:18px 0 14px}.hero p{color:#6b7280;font-size:17px;line-height:1.6}.button,.primary{border:0;border-radius:10px;padding:14px 25px;background:#111827;color:#fff;font-weight:700;font-size:16px}.section,.how{max-width:1000px;margin:auto;padding:25px 18px 55px}.head{text-align:center}.head p,.card p,footer p{color:#6b7280}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px}.card{background:#fff;border:1px solid #e5e7eb;border-radius:18px;padding:15px}.thumb{height:145px;border-radius:13px;background:#eef2ff;display:grid;place-items:center;font-size:55px}.bottom{display:flex;justify-content:space-between;align-items:center;margin-top:16px}.bottom button{border:0;border-radius:10px;padding:11px 16px;background:#111827;color:#fff;font-weight:700}.steps{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}.steps div{background:#fff;border:1px solid #e5e7eb;border-radius:14px;padding:18px;display:flex;gap:10px;align-items:center}.steps b{width:30px;height:30px;border-radius:50%;background:#111827;color:#fff;display:grid;place-items:center}footer{text-align:center;padding:35px 20px;background:#111827;color:#fff}@media(max-width:600px){.steps{grid-template-columns:1fr}}
+
+/* =========================================================
+   Dhramvir Finds — style.css
+   Responsive styles for the existing website
+   ========================================================= */
+
+/* ---------- 1. Global Reset ---------- */
+
+:root {
+  --df-primary: #5b4bdb;
+  --df-primary-dark: #4535bd;
+  --df-secondary: #0f172a;
+  --df-accent: #06b6d4;
+  --df-background: #f5f7fb;
+  --df-surface: #ffffff;
+  --df-text: #1e293b;
+  --df-muted: #64748b;
+  --df-border: #e2e8f0;
+  --df-success: #15803d;
+  --df-success-bg: #f0fdf4;
+  --df-error: #b91c1c;
+  --df-error-bg: #fef2f2;
+  --df-radius: 14px;
+  --df-shadow: 0 8px 25px rgba(15, 23, 42, 0.07);
+  --df-transition: 0.2s ease;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  min-width: 320px;
+  color: var(--df-text);
+  background: var(--df-background);
+  font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont,
+    "Segoe UI", sans-serif;
+  font-size: 16px;
+  line-height: 1.6;
+}
+
+img,
+picture,
+video,
+canvas,
+svg {
+  max-width: 100%;
+}
+
+img {
+  height: auto;
+}
+
+button,
+input,
+textarea,
+select {
+  font: inherit;
+}
+
+button {
+  cursor: pointer;
+}
+
+button:disabled {
+  cursor: not-allowed;
+  opacity: 0.65;
+}
+
+a {
+  color: var(--df-primary);
+  text-decoration: none;
+  transition: color var(--df-transition);
+}
+
+a:hover {
+  color: var(--df-primary-dark);
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  color: var(--df-secondary);
+  line-height: 1.3;
+  overflow-wrap: anywhere;
+}
+
+p {
+  overflow-wrap: anywhere;
+}
+
+:focus-visible {
+  outline: 3px solid rgba(91, 75, 219, 0.45);
+  outline-offset: 3px;
+}
+
+/* ---------- 2. Buttons ---------- */
+
+button,
+.btn,
+.button,
+.primary-btn,
+.secondary-btn {
+  transition:
+    background var(--df-transition),
+    color var(--df-transition),
+    border-color var(--df-transition),
+    transform var(--df-transition),
+    box-shadow var(--df-transition);
+}
+
+.btn,
+.button,
+.primary-btn,
+.secondary-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 42px;
+  padding: 10px 18px;
+  border: 1px solid transparent;
+  border-radius: 10px;
+  font-weight: 600;
+  text-align: center;
+  text-decoration: none;
+}
+
+.primary-btn,
+.btn-primary {
+  color: #fff;
+  background: var(--df-primary);
+}
+
+.primary-btn:hover,
+.btn-primary:hover {
+  color: #fff;
+  background: var(--df-primary-dark);
+}
+
+.secondary-btn,
+.btn-secondary {
+  color: var(--df-text);
+  background: #fff;
+  border-color: var(--df-border);
+}
+
+.secondary-btn:hover,
+.btn-secondary:hover {
+  background: #f8fafc;
+  border-color: #cbd5e1;
+}
+
+button:active,
+.btn:active,
+.button:active {
+  transform: translateY(1px);
+}
+
+/* ---------- 3. Page Layout ---------- */
+
+.container,
+.main-container,
+.page-container {
+  width: min(1200px, calc(100% - 40px));
+  margin-right: auto;
+  margin-left: auto;
+}
+
+section {
+  scroll-margin-top: 90px;
+}
+
+.section-title {
+  margin: 0 0 10px;
+  font-size: clamp(1.5rem, 3vw, 2.25rem);
+  font-weight: 750;
+}
+
+.section-description {
+  margin-top: 0;
+  color: var(--df-muted);
+}
+
+/* ---------- 4. Header and Navigation ---------- */
+
+header,
+.site-header,
+.navbar {
+  position: relative;
+  z-index: 20;
+}
+
+.site-header,
+.navbar {
+  background: var(--df-surface);
+  border-bottom: 1px solid var(--df-border);
+}
+
+.navbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 14px;
+  padding: 14px 24px;
+}
+
+.logo,
+.site-logo,
+.brand {
+  color: var(--df-secondary);
+  font-size: 1.35rem;
+  font-weight: 800;
+  letter-spacing: -0.4px;
+}
+
+nav {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+nav a {
+  padding: 7px 10px;
+  border-radius: 8px;
+  font-weight: 600;
+}
+
+nav a:hover {
+  background: #f1f5f9;
+}
+
+/* ---------- 5. Hero Section ---------- */
+
+.hero {
+  padding: 72px 20px;
+  color: #fff;
+  background:
+    radial-gradient(circle at top right, rgba(6, 182, 212, 0.3), transparent 35%),
+    linear-gradient(135deg, #312e81, #5b4bdb 60%, #4338ca);
+  text-align: center;
+}
+
+.hero h1 {
+  max-width: 850px;
+  margin: 0 auto 18px;
+  color: #fff;
+  font-size: clamp(2rem, 5vw, 3.6rem);
+  font-weight: 850;
+  letter-spacing: -1px;
+}
+
+.hero p {
+  max-width: 720px;
+  margin: 0 auto 25px;
+  color: rgba(255, 255, 255, 0.9);
+  font-size: clamp(1rem, 2vw, 1.2rem);
+}
+
+.hero .btn,
+.hero .button,
+.hero button {
+  min-height: 46px;
+}
+
+/* ---------- 6. Prompt Cards and Grids ---------- */
+
+.prompt-grid,
+.prompts-grid,
+.cards-grid,
+.product-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 22px;
+}
+
+.prompt-card,
+.prompt-item,
+.product-card,
+.card {
+  min-width: 0;
+  padding: 22px;
+  overflow-wrap: anywhere;
+  background: var(--df-surface);
+  border: 1px solid var(--df-border);
+  border-radius: var(--df-radius);
+  box-shadow: var(--df-shadow);
+  transition:
+    transform var(--df-transition),
+    box-shadow var(--df-transition),
+    border-color var(--df-transition);
+}
+
+.prompt-card:hover,
+.prompt-item:hover,
+.product-card:hover,
+.card:hover {
+  transform: translateY(-3px);
+  border-color: #c7d2fe;
+  box-shadow: 0 14px 32px rgba(15, 23, 42, 0.1);
+}
+
+.prompt-card h3,
+.prompt-item h3,
+.product-card h3,
+.card h3 {
+  margin-top: 0;
+  font-size: 1.15rem;
+}
+
+.prompt-card p,
+.prompt-item p,
+.product-card p,
+.card p {
+  color: var(--df-muted);
+}
+
+.prompt-card button,
+.prompt-item button,
+.product-card button {
+  max-width: 100%;
+}
+
+.price,
+.prompt-price {
+  color: var(--df-primary);
+  font-size: 1.25rem;
+  font-weight: 800;
+}
+
+.category,
+.badge,
+.tag {
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 10px;
+  color: #4338ca;
+  background: #eef2ff;
+  border-radius: 999px;
+  font-size: 0.8rem;
+  font-weight: 700;
+}
+
+/* ---------- 7. Forms and Inputs ---------- */
+
+form {
+  min-width: 0;
+}
+
+label {
+  display: block;
+  margin-bottom: 6px;
+  color: var(--df-text);
+  font-weight: 600;
+}
+
+input,
+textarea,
+select {
+  max-width: 100%;
+}
+
+input[type="text"],
+input[type="email"],
+input[type="password"],
+input[type="tel"],
+input[type="number"],
+input[type="search"],
+input[type="url"],
+textarea,
+select {
+  width: 100%;
+  min-height: 44px;
+  padding: 11px 13px;
+  color: var(--df-text);
+  background: #fff;
+  border: 1px solid #cbd5e1;
+  border-radius: 10px;
+  outline: none;
+  transition:
+    border-color var(--df-transition),
+    box-shadow var(--df-transition);
+}
+
+textarea {
+  min-height: 130px;
+  resize: vertical;
+}
+
+input:focus,
+textarea:focus,
+select:focus {
+  border-color: var(--df-primary);
+  box-shadow: 0 0 0 3px rgba(91, 75, 219, 0.12);
+}
+
+input::placeholder,
+textarea::placeholder {
+  color: #94a3b8;
+}
+
+input[type="checkbox"],
+input[type="radio"] {
+  accent-color: var(--df-primary);
+}
+
+form button[type="submit"],
+form input[type="submit"] {
+  margin-top: 10px;
+}
+
+/* ---------- 8. Login and Account Modals ---------- */
+
+.modal,
+#loginModal,
+#profileModal,
+#paymentModal {
+  z-index: 1000;
+}
+
+.modal-content,
+.modal-box,
+.login-modal-content,
+.profile-modal-content {
+  width: min(500px, calc(100% - 32px));
+  max-height: 90vh;
+  margin: auto;
+  padding: 25px;
+  overflow-y: auto;
+  background: #fff;
+  border: 1px solid var(--df-border);
+  border-radius: 18px;
+  box-shadow: 0 24px 70px rgba(15, 23, 42, 0.22);
+}
+
+.modal-content h2,
+.modal-box h2 {
+  margin-top: 0;
+}
+
+.close,
+.close-modal,
+.modal-close {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 36px;
+  min-height: 36px;
+  color: var(--df-muted);
+  background: #f1f5f9;
+  border: 0;
+  border-radius: 9px;
+  font-size: 1.35rem;
+}
+
+.close:hover,
+.close-modal:hover,
+.modal-close:hover {
+  color: var(--df-secondary);
+  background: #e2e8f0;
+}
+
+/* ---------- 9. Profile and Account Sections ---------- */
+
+.profile-section,
+.account-section,
+.user-profile,
+.profile-card {
+  padding: 22px;
+  background: #fff;
+  border: 1px solid var(--df-border);
+  border-radius: var(--df-radius);
+  box-shadow: var(--df-shadow);
+}
+
+.profile-section h2,
+.account-section h2 {
+  margin-top: 0;
+}
+
+.profile-menu,
+.account-menu {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.profile-menu button,
+.account-menu button {
+  padding: 10px 14px;
+  color: var(--df-text);
+  background: #fff;
+  border: 1px solid var(--df-border);
+  border-radius: 9px;
+  font-weight: 600;
+}
+
+.profile-menu button:hover,
+.account-menu button:hover {
+  color: var(--df-primary);
+  background: #f5f3ff;
+  border-color: #c4b5fd;
+}
+
+.profile-info,
+.account-info {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.profile-info > div,
+.account-info > div {
+  min-width: 0;
+  padding: 14px;
+  background: #f8fafc;
+  border: 1px solid var(--df-border);
+  border-radius: 10px;
+}
+
+/* ---------- 10. Help Center ---------- */
+
+.df-help-center,
+.df-help-container,
+#df-help-center {
+  width: min(900px, calc(100% - 32px));
+  margin: 25px auto;
+  padding: 24px;
+  background: #fff;
+  border: 1px solid var(--df-border);
+  border-radius: 16px;
+  box-shadow: var(--df-shadow);
+}
+
+.df-help-center h2,
+.df-help-container h2,
+#df-help-center h2 {
+  margin-top: 0;
+  margin-bottom: 8px;
+  font-size: 1.6rem;
+}
+
+.df-help-center p,
+.df-help-container p,
+#df-help-center p {
+  color: var(--df-muted);
+}
+
+.df-help-center form,
+.df-help-container form,
+#df-help-center form {
+  display: grid;
+  gap: 12px;
+}
+
+.df-help-center input,
+.df-help-center textarea,
+.df-help-container input,
+.df-help-container textarea,
+#df-help-center input,
+#df-help-center textarea {
+  width: 100%;
+}
+
+.df-help-center button,
+.df-help-container button,
+#df-help-center button {
+  justify-self: start;
+}
+
+/* ---------- 11. Support Ticket Form ---------- */
+
+#df-support-form {
+  display: grid;
+  gap: 14px;
+}
+
+#df-ticket-subject {
+  width: 100%;
+}
+
+#df-ticket-message {
+  width: 100%;
+  min-height: 140px;
+}
+
+#df-ticket-submit,
+#df-support-submit {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 44px;
+  padding: 11px 20px;
+  color: #fff;
+  background: var(--df-primary);
+  border: 0;
+  border-radius: 10px;
+  font-weight: 700;
+}
+
+#df-ticket-submit:hover,
+#df-support-submit:hover {
+  background: var(--df-primary-dark);
+}
+
+#df-ticket-message-status {
+  margin-top: 12px;
+  padding: 12px 14px;
+  border-radius: 10px;
+  overflow-wrap: anywhere;
+}
+
+.df-help-message {
+  padding: 12px 14px;
+  border-radius: 10px;
+  font-size: 0.95rem;
+}
+
+.df-help-success {
+  color: var(--df-success);
+  background: var(--df-success-bg);
+  border: 1px solid #bbf7d0;
+}
+
+.df-help-error {
+  color: var(--df-error);
+  background: var(--df-error-bg);
+  border: 1px solid #fecaca;
+}
+
+/* ---------- 12. Ticket History and Purchase Lists ---------- */
+
+.ticket-list,
+.tickets-list,
+.purchase-list,
+.purchases-list {
+  display: grid;
+  gap: 14px;
+}
+
+.ticket-item,
+.support-ticket,
+.purchase-item,
+.purchase-card {
+  min-width: 0;
+  padding: 16px;
+  background: #fff;
+  border: 1px solid var(--df-border);
+  border-radius: 12px;
+}
+
+.ticket-item h3,
+.support-ticket h3,
+.purchase-item h3,
+.purchase-card h3 {
+  margin-top: 0;
+  margin-bottom: 8px;
+}
+
+.ticket-item p,
+.support-ticket p,
+.purchase-item p,
+.purchase-card p {
+  color: var(--df-muted);
+  overflow-wrap: anywhere;
+}
+
+.status,
+.ticket-status,
+.purchase-status {
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 9px;
+  color: #1d4ed8;
+  background: #eff6ff;
+  border-radius: 999px;
+  font-size: 0.8rem;
+  font-weight: 700;
+}
+
+/* ---------- 13. Tables ---------- */
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+th,
+td {
+  padding: 12px;
+  border-bottom: 1px solid var(--df-border);
+  text-align: left;
+  vertical-align: top;
+  overflow-wrap: anywhere;
+}
+
+th {
+  color: var(--df-secondary);
+  background: #f8fafc;
+  font-weight: 700;
+}
+
+.table-wrapper,
+.table-responsive {
+  width: 100%;
+  overflow-x: auto;
+  border: 1px solid var(--df-border);
+  border-radius: 12px;
+}
+
+/* ---------- 14. Alerts and Empty States ---------- */
+
+.alert,
+.notice,
+.empty-state,
+.no-results {
+  padding: 16px;
+  background: #f8fafc;
+  border: 1px solid var(--df-border);
+  border-radius: 12px;
+}
+
+.empty-state,
+.no-results {
+  color: var(--df-muted);
+  text-align: center;
+}
+
+.error,
+.error-message {
+  color: var(--df-error);
+}
+
+.success,
+.success-message {
+  color: var(--df-success);
+}
+
+/* ---------- 15. Footer ---------- */
+
+footer,
+.site-footer {
+  margin-top: 50px;
+  padding: 30px 20px;
+  color: #cbd5e1;
+  background: #0f172a;
+  text-align: center;
+}
+
+footer a,
+.site-footer a {
+  color: #c4b5fd;
+}
+
+footer a:hover,
+.site-footer a:hover {
+  color: #fff;
+}
+
+/* ---------- 16. Utility Classes ---------- */
+
+.text-center {
+  text-align: center;
+}
+
+.text-muted {
+  color: var(--df-muted);
+}
+
+.hidden {
+  display: none !important;
+}
+
+.w-full {
+  width: 100%;
+}
+
+.mt-1 {
+  margin-top: 8px;
+}
+
+.mt-2 {
+  margin-top: 16px;
+}
+
+.mb-1 {
+  margin-bottom: 8px;
+}
+
+.mb-2 {
+  margin-bottom: 16px;
+}
+
+/* ---------- 17. Tablet ---------- */
+
+@media (max-width: 900px) {
+  .prompt-grid,
+  .prompts-grid,
+  .cards-grid,
+  .product-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .hero {
+    padding: 56px 20px;
+  }
+
+  .navbar {
+    padding: 12px 18px;
+  }
+}
+
+/* ---------- 18. Mobile ---------- */
+
+@media (max-width: 600px) {
+  body {
+    font-size: 15px;
+  }
+
+  .container,
+  .main-container,
+  .page-container {
+    width: calc(100% - 24px);
+  }
+
+  .prompt-grid,
+  .prompts-grid,
+  .cards-grid,
+  .product-grid {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 15px;
+  }
+
+  .prompt-card,
+  .prompt-item,
+  .product-card,
+  .card {
+    padding: 17px;
+  }
+
+  .hero {
+    padding: 44px 16px;
+  }
+
+  .hero h1 {
+    letter-spacing: -0.5px;
+  }
+
+  .navbar {
+    align-items: flex-start;
+    flex-direction: column;
+    padding: 12px;
+  }
+
+  nav {
+    width: 100%;
+    gap: 6px;
+  }
+
+  nav a {
+    padding: 7px;
+    font-size: 0.9rem;
+  }
+
+  .btn,
+  .button,
+  .primary-btn,
+  .secondary-btn {
+    max-width: 100%;
+    padding: 10px 14px;
+  }
+
+  .profile-info,
+  .account-info {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .profile-section,
+  .account-section,
+  .profile-card {
+    padding: 16px;
+  }
+
+  .df-help-center,
+  .df-help-container,
+  #df-help-center {
+    width: calc(100% - 20px);
+    margin: 15px auto;
+    padding: 16px;
+  }
+
+  .modal-content,
+  .modal-box,
+  .login-modal-content,
+  .profile-modal-content {
+    width: calc(100% - 24px);
+    max-height: 92vh;
+    padding: 18px;
+  }
+
+  th,
+  td {
+    padding: 9px;
+    font-size: 0.9rem;
+  }
+
+  footer,
+  .site-footer {
+    margin-top: 30px;
+    padding: 24px 14px;
+  }
+}
+
+/* ---------- 19. Reduced Motion ---------- */
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
