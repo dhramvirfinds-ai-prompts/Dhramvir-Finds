@@ -1,135 +1,232 @@
-async function submitSupportTicket() {
-  const button = document.getElementById("df-support-submit");
-  let ticketSaved = false;
 
-  try {
-    const user = await getLoggedInUser();
+/* =========================================================
+   Dhramvir Finds — script.js
+   Compatibility update; existing index.html features remain.
+   ========================================================= */
 
-    if (!user) {
-      showLoginModal();
-      return;
+(function () {
+  "use strict";
+
+  console.info("Dhramvir Finds: script.js loaded.");
+
+  // Report JavaScript errors without interrupting other features.
+  window.addEventListener("error", function (event) {
+    console.error(
+      "Dhramvir Finds JavaScript error:",
+      event.message,
+      event.filename,
+      event.lineno
+    );
+  });
+
+  window.addEventListener("unhandledrejection", function (event) {
+    console.error(
+      "Dhramvir Finds promise error:",
+      event.reason
+    );
+  });
+
+  // Escape user-provided text before inserting it into HTML.
+  function escapeHtml(value) {
+    return String(value ?? "").replace(/[&<>"']/g, function (char) {
+      return {
+        "&": "&amp;",
+        "<": "&lt;",
+        ">": "&gt;",
+        '"': "&quot;",
+        "'": "&#39;"
+      }[char];
+    });
+  }
+
+  /*
+   * Backward-compatible Support Ticket function.
+   * The current Help Center in index.html already has its own
+   * submit handler. This function does not attach another one.
+   */
+  async function submitSupportTicket() {
+    const button =
+      document.getElementById("df-support-submit") ||
+      document.getElementById("df-ticket-submit");
+
+    const subjectInput =
+      document.getElementById("df-support-subject") ||
+      document.getElementById("df-ticket-subject");
+
+    const messageInput =
+      document.getElementById("df-support-message") ||
+      document.getElementById("df-ticket-message");
+
+    const statusBox =
+      document.getElementById("df-ticket-message-status");
+
+    let ticketSaved = false;
+
+    function showStatus(message, success) {
+      if (statusBox) {
+        statusBox.className = success
+          ? "df-help-message df-help-success"
+          : "df-help-message df-help-error";
+
+        statusBox.textContent = message;
+      } else {
+        alert(message);
+      }
     }
 
-    const subjectInput = document.getElementById("df-support-subject");
-    const messageInput = document.getElementById("df-support-message");
+    if (button && button.disabled) return;
 
-    const subject = subjectInput?.value.trim() || "";
-    const message = messageInput?.value.trim() || "";
-    const email = user.email || "";
+    try {
+      if (
+        !window.supabase ||
+        typeof supabaseClient === "undefined" ||
+        !supabaseClient
+      ) {
+        throw new Error("Supabase connection nahi mil raha.");
+      }
 
-    if (!email) {
-      alert("Aapke account ka email nahi mila. Dobara login karein.");
-      return;
-    }
+      const getUser =
+        typeof getLoggedInUser === "function"
+          ? getLoggedInUser
+          : typeof getCurrentUser === "function"
+            ? getCurrentUser
+            : null;
 
-    if (!subject) {
-      alert("Kripya support ticket ka subject likhiye.");
-      subjectInput?.focus();
-      return;
-    }
+      if (!getUser) {
+        throw new Error("Login system ka user function nahi mila.");
+      }
 
-    if (!message) {
-      alert("Kripya apni problem detail mein likhiye.");
-      messageInput?.focus();
-      return;
-    }
+      const user = await getUser();
 
-    if (subject.length > 120 || message.length > 2000) {
-      alert("Subject ya message bahut lamba hai.");
-      return;
-    }
+      if (!user) {
+        if (typeof showLoginModal === "function") {
+          showLoginModal();
+        } else {
+          const loginModal = document.getElementById("loginModal");
+          if (loginModal) loginModal.style.display = "flex";
+          else alert("Support ticket bhejne ke liye pehle login karein.");
+        }
+        return;
+      }
 
-    if (button) {
-      button.disabled = true;
-      button.innerText = "Sending...";
-    }
+      const subject = subjectInput?.value.trim() || "";
+      const message = messageInput?.value.trim() || "";
+      const email = user.email || "";
 
-    // STEP 1: Save the support ticket in Supabase.
-    const { data: ticket, error: ticketError } =
-      await supabaseClient
+      if (!subject) {
+        showStatus("Kripya ticket ka subject likhiye.", false);
+        subjectInput?.focus();
+        return;
+      }
+
+      if (!message) {
+        showStatus("Kripya apni problem detail mein likhiye.", false);
+        messageInput?.focus();
+        return;
+      }
+
+      if (subject.length > 120 || message.length > 2000) {
+        showStatus(
+          "Subject 120 aur message 2000 characters se chhota rakhein.",
+          false
+        );
+        return;
+      }
+
+      if (button) {
+        button.disabled = true;
+        button.textContent = "Sending...";
+      }
+
+      // Save using the existing support_tickets table fields.
+      const { data: ticket, error } = await supabaseClient
         .from("support_tickets")
         .insert({
           user_id: user.id,
-          email: email,
           subject: subject,
           message: message,
-          status: "open"
+          status: "open",
+          admin_reply: null,
+          created_at: new Date().toISOString(),
+          updated_at: new Date().toISOString()
         })
         .select("id")
         .single();
 
-    if (ticketError) {
-      console.error("Support ticket save error:", ticketError);
+      if (error) {
+        console.error("Support ticket save error:", error);
+        showStatus(
+          "Ticket send nahi ho paya. Kripya dobara try karein.",
+          false
+        );
+        return;
+      }
 
-      alert(
-        "Support ticket save nahi ho paya. " +
-        "Supabase table aur RLS policies check karein."
-      );
+      ticketSaved = true;
 
-      return;
-    }
+      if (subjectInput) subjectInput.value = "";
+      if (messageInput) messageInput.value = "";
 
-    ticketSaved = true;
+      // The ticket remains saved if the email notification fails.
+      if (email && ticket?.id) {
+        try {
+          const { data, error: emailError } =
+            await supabaseClient.functions.invoke(
+              "send-support-email",
+              {
+                body: {
+                  email: email,
+                  subject: subject,
+                  message: message,
+                  ticket_id: ticket.id
+                }
+              }
+            );
 
-    // STEP 2: Request the support email notification.
-    const { data: emailResult, error: emailError } =
-      await supabaseClient.functions.invoke(
-        "send-support-email",
-        {
-          body: {
-            email: email,
-            subject: subject,
-            message: message,
-            ticket_id: ticket.id
+          if (emailError || data?.success === false) {
+            console.error(
+              "Support email notification error:",
+              emailError || data
+            );
+
+            showStatus(
+              "Ticket save ho gaya hai, lekin email notification confirm nahi hua.",
+              true
+            );
+            return;
           }
+        } catch (emailError) {
+          console.error("Support email request error:", emailError);
+
+          showStatus(
+            "Ticket save ho gaya hai, lekin email notification nahi bheja ja saka.",
+            true
+          );
+          return;
         }
+      }
+
+      showStatus("✓ Support ticket successfully sent.", true);
+
+    } catch (error) {
+      console.error("Support ticket submission error:", error);
+
+      showStatus(
+        ticketSaved
+          ? "Ticket save ho gaya hai, lekin agla step complete nahi hua."
+          : (error?.message || "Ticket submit nahi ho paya. Dobara try karein."),
+        ticketSaved
       );
 
-    // The ticket remains saved even if email notification fails.
-    if (emailError || emailResult?.success === false) {
-      console.error(
-        "Support email notification error:",
-        emailError || emailResult
-      );
-
-      alert(
-        "Aapka support ticket save ho gaya hai, " +
-        "lekin email notification confirm nahi ho paya. " +
-        "Aapka ticket My Support Tickets mein available rahega."
-      );
-
-      await openMyTickets();
-      return;
-    }
-
-    alert(
-      "Aapka support ticket submit ho gaya! " +
-      "Email notification request bhi successfully process hui."
-    );
-
-    // STEP 3: Display the user's saved tickets.
-    await openMyTickets();
-
-  } catch (error) {
-    console.error("Support ticket submission error:", error);
-
-    if (ticketSaved) {
-      alert(
-        "Aapka support ticket save ho chuka hai, " +
-        "lekin agla step complete nahi ho paya. " +
-        "My Support Tickets mein apna ticket check karein."
-      );
-    } else {
-      alert(
-        error?.message ||
-        "Support ticket submit nahi ho paya. Kripya dobara try karein."
-      );
-    }
-
-  } finally {
-    if (button) {
-      button.disabled = false;
-      button.innerText = "Send Support Ticket";
+    } finally {
+      if (button) {
+        button.disabled = false;
+        button.textContent = "Send Support Ticket";
+      }
     }
   }
-}
+
+  // Preserve compatibility with any existing inline HTML callers.
+  window.submitSupportTicket = submitSupportTicket;
+
+})();
