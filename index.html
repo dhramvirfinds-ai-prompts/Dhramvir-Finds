@@ -2750,44 +2750,60 @@ document.addEventListener(
 
 
     /* =================================
-       MY PURCHASES
+       MY PURCHASES — LOAD FROM SUPABASE
     ================================= */
-
     if (purchasesBtn) {
-
-      purchasesBtn.addEventListener(
-        "click",
-        function() {
-
-          openContent(
-
-            "🎫 My Purchases",
-
-            `
-
-            <div class="df-empty-purchases">
-
-              <div class="df-empty-purchases-icon">
-                🛒
-              </div>
-
-              <h3>
-                No purchases yet
-              </h3>
-
-              <p>
-                Your purchased prompts will appear here after a successful purchase.
-              </p>
-
-            </div>
-
-            `
-
-          );
-
+      purchasesBtn.addEventListener("click", async function() {
+        const user = await getCurrentUser();
+        if (!user) {
+          loginModal.style.display = "flex";
+          return;
         }
-      );
 
+        openContent("🎫 My Purchases", `
+          <div class="df-empty-purchases">
+            <div class="df-empty-purchases-icon">⏳</div>
+            <h3>Loading purchases...</h3>
+          </div>
+        `);
+
+        const { data, error } = await supabaseClient
+          .from("purchases")
+          .select("id,prompt_id,amount,currency,status,created_at,prompts(title,category,description)")
+          .eq("user_id", user.id)
+          .order("created_at", { ascending: false });
+
+        if (error) {
+          console.error("My purchases error:", error);
+          contentBody.innerHTML = `
+            <div class="df-empty-purchases">
+              <div class="df-empty-purchases-icon">⚠️</div>
+              <h3>Purchases could not be loaded</h3>
+              <p>Please check the purchases table relationship and its SELECT RLS policy.</p>
+            </div>`;
+          return;
+        }
+
+        const paid = (data || []).filter(p => String(p.status || "").toLowerCase() === "paid" || String(p.status || "").toLowerCase() === "completed");
+        if (!paid.length) {
+          contentBody.innerHTML = `
+            <div class="df-empty-purchases">
+              <div class="df-empty-purchases-icon">🛒</div>
+              <h3>No completed purchases yet</h3>
+              <p>Your verified purchases will appear here after payment is confirmed.</p>
+            </div>`;
+          return;
+        }
+
+        contentBody.innerHTML = paid.map(p => `
+          <div class="df-help-card">
+            <h3>${escapeHtml(p.prompts?.title || "AI Prompt")}</h3>
+            <p>${escapeHtml(p.prompts?.category || "Prompt")}</p>
+            <p><b>Amount:</b> ${escapeHtml(String(p.currency || "INR"))} ${escapeHtml(String(p.amount ?? ""))}</p>
+            <p><b>Purchased:</b> ${escapeHtml(p.created_at ? new Date(p.created_at).toLocaleDateString() : "—")}</p>
+            <span class="df-status-badge">Payment verified</span>
+          </div>`).join("");
+      });
     }
 
 
@@ -2978,6 +2994,46 @@ document.addEventListener(
 
 </script>
 
+
+
+<script>
+/* Dhramvir Finds: safe unlock flow.
+   Payment is intentionally not simulated; a verified server-side payment flow is required. */
+window.unlock = async function(promptTitle) {
+  try {
+    const { data, error } = await supabaseClient.auth.getUser();
+    if (error) console.error("Auth check:", error);
+    if (!data?.user) {
+      const modal = document.getElementById("loginModal");
+      if (modal) modal.style.display = "flex";
+      alert("Please log in first. Payment and prompt access will be enabled after secure payment verification is configured.");
+      return;
+    }
+
+    const existing = document.getElementById("df-unlock-status-modal");
+    if (existing) existing.remove();
+
+    const overlay = document.createElement("div");
+    overlay.id = "df-unlock-status-modal";
+    overlay.className = "df-profile-overlay";
+    overlay.style.display = "flex";
+    overlay.innerHTML = `
+      <div class="df-profile-box" role="dialog" aria-modal="true" aria-labelledby="df-unlock-title">
+        <button type="button" class="df-profile-close" aria-label="Close">×</button>
+        <h2 id="df-unlock-title" class="df-profile-name">Unlock prompt</h2>
+        <p><strong>${String(promptTitle).replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]))}</strong></p>
+        <p>Secure payment is not connected yet. No payment has been taken and this prompt has not been unlocked.</p>
+        <p>Once Razorpay/server-side payment verification is configured, this button can complete the purchase safely.</p>
+      </div>`;
+    document.body.appendChild(overlay);
+    overlay.querySelector("button").addEventListener("click", () => overlay.remove());
+    overlay.addEventListener("click", e => { if (e.target === overlay) overlay.remove(); });
+  } catch (e) {
+    console.error("Unlock flow error:", e);
+    alert("Unable to start unlock. Please try again later.");
+  }
+};
+</script>
 
 </body>
 
