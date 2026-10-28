@@ -1590,6 +1590,12 @@ document.addEventListener(
 
     function openContent(title, html) {
 
+      /* Close the profile menu before opening its detail screen.
+         This prevents two full-screen overlays from stacking on mobile. */
+      if (profileModal) {
+        profileModal.style.display = "none";
+      }
+
       contentTitle.innerText =
         title;
 
