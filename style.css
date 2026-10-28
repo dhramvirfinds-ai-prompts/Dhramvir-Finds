@@ -934,3 +934,300 @@ footer a:hover,
     transition-duration: 0.01ms !important;
   }
 }
+
+/* =========================================================
+   Dhramvir Finds — Mobile UI Improvements
+   Add this block at the END of style.css
+   ========================================================= */
+
+/* Prevent horizontal overflow on phones */
+html,
+body {
+  max-width: 100%;
+  overflow-x: clip;
+}
+
+img,
+video,
+iframe {
+  max-width: 100%;
+}
+
+/* Better touch-friendly controls */
+button,
+.btn,
+.button,
+.primary-btn,
+.secondary-btn,
+input,
+select,
+textarea {
+  min-width: 0;
+  scroll-margin-bottom: 24px;
+}
+
+button,
+.btn,
+.button,
+.primary-btn,
+.secondary-btn {
+  min-height: 44px;
+}
+
+/* Keep cards and grids within the screen */
+.prompt-grid,
+.prompts-grid,
+.cards-grid,
+.product-grid {
+  width: 100%;
+  min-width: 0;
+}
+
+.prompt-card,
+.prompt-item,
+.product-card,
+.card {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.prompt-card button,
+.prompt-item button,
+.product-card button {
+  white-space: normal;
+  overflow-wrap: anywhere;
+}
+
+/* Make existing modal overlays scroll safely */
+.df-login-overlay,
+.df-profile-overlay,
+.df-overlay {
+  box-sizing: border-box;
+  padding:
+    max(12px, env(safe-area-inset-top))
+    12px
+    max(12px, env(safe-area-inset-bottom));
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* Keep modal content inside the visible screen */
+.df-login-overlay .df-login-box,
+.df-profile-overlay .df-profile-box,
+.df-overlay .df-modal {
+  box-sizing: border-box;
+  width: min(100%, 500px);
+  max-width: 100%;
+  max-height: calc(100vh - 32px);
+  max-height: calc(100dvh - 32px);
+  overflow-x: hidden;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* Help Center and support forms */
+#df-support-form,
+.df-help-center form,
+.df-help-container form,
+#df-help-center form {
+  min-width: 0;
+  width: 100%;
+}
+
+#df-ticket-subject,
+#df-ticket-message,
+#df-ticket-submit,
+#df-support-submit,
+#df-ticket-message-status {
+  box-sizing: border-box;
+  max-width: 100%;
+}
+
+#df-ticket-submit,
+#df-support-submit {
+  white-space: normal;
+  overflow-wrap: anywhere;
+}
+
+/* Ticket and purchase details should wrap on narrow screens */
+.ticket-item,
+.tickets-list,
+.ticket-list,
+.support-ticket,
+.purchase-item,
+.purchase-card,
+.purchases-list,
+.purchase-list {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+@media (max-width: 600px) {
+  /* General spacing */
+  body {
+    font-size: 15px;
+  }
+
+  .container,
+  .main-container,
+  .page-container {
+    width: calc(100% - 24px);
+  }
+
+  /* Header and profile button */
+  .navbar {
+    gap: 10px;
+    padding: 12px;
+  }
+
+  .navbar > *,
+  header > *,
+  .brand,
+  .logo,
+  .site-logo {
+    min-width: 0;
+    overflow-wrap: anywhere;
+  }
+
+  /* Hero section */
+  .hero {
+    padding: 38px 14px;
+  }
+
+  .hero h1 {
+    font-size: clamp(1.8rem, 8vw, 2.5rem);
+    line-height: 1.2;
+    overflow-wrap: anywhere;
+  }
+
+  .hero p {
+    font-size: 1rem;
+  }
+
+  /* Prompt cards: one column on phones */
+  .prompt-grid,
+  .prompts-grid,
+  .cards-grid,
+  .product-grid {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 14px;
+  }
+
+  .prompt-card,
+  .prompt-item,
+  .product-card,
+  .card {
+    padding: 16px;
+  }
+
+  .prompt-card button,
+  .prompt-item button,
+  .product-card button {
+    max-width: 100%;
+  }
+
+  /* Profile and account information */
+  .profile-info,
+  .account-info {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .profile-section,
+  .account-section,
+  .profile-card {
+    padding: 14px;
+  }
+
+  .profile-menu,
+  .account-menu {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 8px;
+  }
+
+  .profile-menu button,
+  .account-menu button {
+    width: 100%;
+    text-align: left;
+    overflow-wrap: anywhere;
+  }
+
+  /* Login, profile and payment modal sizing */
+  .modal-content,
+  .modal-box,
+  .login-modal-content,
+  .profile-modal-content {
+    width: 100%;
+    max-width: 100%;
+    max-height: calc(100vh - 28px);
+    max-height: calc(100dvh - 28px);
+    padding: 16px;
+    overflow-x: hidden;
+    overflow-y: auto;
+  }
+
+  /* Help Center */
+  .df-help-center,
+  .df-help-container,
+  #df-help-center {
+    width: calc(100% - 20px);
+    margin: 12px auto;
+    padding: 14px;
+  }
+
+  #df-ticket-message {
+    min-height: 120px;
+  }
+
+  #df-ticket-submit,
+  #df-support-submit {
+    width: 100%;
+  }
+
+  /* Tables remain usable without squeezing text */
+  .table-wrapper,
+  .table-responsive {
+    max-width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  table {
+    min-width: 440px;
+  }
+
+  th,
+  td {
+    padding: 9px;
+    font-size: 0.88rem;
+  }
+
+  /* Avoid hover movement on touch devices */
+  .prompt-card:hover,
+  .prompt-item:hover,
+  .product-card:hover,
+  .card:hover {
+    transform: none;
+  }
+}
+
+@media (max-width: 360px) {
+  .hero h1 {
+    font-size: 1.7rem;
+  }
+
+  .prompt-card,
+  .prompt-item,
+  .product-card,
+  .card {
+    padding: 13px;
+  }
+
+  .df-help-center,
+  .df-help-container,
+  #df-help-center {
+    padding: 12px;
+  }
+}
