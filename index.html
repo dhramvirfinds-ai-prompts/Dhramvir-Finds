@@ -2713,44 +2713,48 @@ document.addEventListener(
 
 
     /* =================================
-       MY UNLOCKED PROMPTS
+       MY UNLOCKED PROMPTS — VERIFIED PURCHASES ONLY
     ================================= */
-
     if (unlockedPromptsBtn) {
-
-      unlockedPromptsBtn.addEventListener(
-        "click",
-        function() {
-
-          openContent(
-
-            "🔓 My Unlocked Prompts",
-
-            `
-
-            <div class="df-empty-purchases">
-
-              <div class="df-empty-purchases-icon">
-                🔓
-              </div>
-
-              <h3>
-                No unlocked prompts yet
-              </h3>
-
-              <p>
-                Your unlocked prompts will appear here after purchase.
-              </p>
-
-            </div>
-
-            `
-
-          );
-
+      unlockedPromptsBtn.addEventListener("click", async function() {
+        const user = await getCurrentUser();
+        if (!user) {
+          loginModal.style.display = "flex";
+          return;
         }
-      );
-
+        openContent("🔓 My Unlocked Prompts", `<div class="df-empty-purchases"><div class="df-empty-purchases-icon">⏳</div><h3>Loading unlocked prompts...</h3></div>`);
+        const { data: purchases, error } = await supabaseClient
+          .from("purchases")
+          .select("prompt_id,amount,currency,status,created_at,prompts(title,category)")
+          .eq("user_id", user.id)
+          .in("status", ["paid", "completed"])
+          .order("created_at", { ascending: false });
+        if (error) {
+          console.error("Unlocked prompts load error:", error);
+          contentBody.innerHTML = `<div class="df-empty-purchases"><h3>Prompts load nahi ho paye</h3><p>Please check purchases SELECT policy.</p></div>`;
+          return;
+        }
+        if (!purchases?.length) {
+          contentBody.innerHTML = `<div class="df-empty-purchases"><div class="df-empty-purchases-icon">🔓</div><h3>No unlocked prompts yet</h3><p>Verified purchases yahan dikhengi.</p></div>`;
+          return;
+        }
+        const ids = [...new Set(purchases.map(p => p.prompt_id).filter(Boolean))];
+        const { data: contents, error: contentError } = await supabaseClient
+          .from("prompt_content")
+          .select("prompt_id,prompt_text")
+          .in("prompt_id", ids);
+        if (contentError) console.error("Prompt content load error:", contentError);
+        const contentMap = new Map((contents || []).map(c => [c.prompt_id, c.prompt_text]));
+        const esc = value => String(value ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+        contentBody.innerHTML = purchases.map(p => `
+          <div class="df-help-card">
+            <h3>${esc(p.prompts?.title || "AI Prompt")}</h3>
+            <p>${esc(p.prompts?.category || "Prompt")}</p>
+            <p><b>Amount:</b> ${esc(p.currency || "INR")} ${esc(p.amount)}</p>
+            <span class="df-status-badge">Payment verified</span>
+            <pre style="white-space:pre-wrap;overflow-wrap:anywhere;margin-top:12px">${esc(contentMap.get(p.prompt_id) || "Prompt content abhi add nahi hua hai. Support se sampark karein.")}</pre>
+          </div>`).join("");
+      });
     }
 
 
@@ -2850,7 +2854,7 @@ document.addEventListener(
               </div>
 
               <div class="df-info-value">
-                Razorpay will be connected later
+                Secure Razorpay checkout
               </div>
 
             </div>
@@ -3003,22 +3007,29 @@ document.addEventListener(
 
 
 <script>
-/* Dhramvir Finds: safe unlock flow.
-   Payment is intentionally not simulated; a verified server-side payment flow is required. */
-window.unlock = async function(promptTitle) {
-  try {
-    const { data, error } = await supabaseClient.auth.getUser();
-    if (error) console.error("Auth check:", error);
-    if (!data?.user) {
-      const modal = document.getElementById("loginModal");
-      if (modal) modal.style.display = "flex";
-      alert("Please log in first. Payment and prompt access will be enabled after secure payment verification is configured.");
-      return;
-    }
+/* Secure Razorpay checkout. Orders and verification are handled only by Supabase Edge Functions. */
+(function () {
+  "use strict";
 
-    const existing = document.getElementById("df-unlock-status-modal");
-    if (existing) existing.remove();
+  function dfEscape(value) {
+    return String(value ?? "").replace(/[&<>"']/g, c => ({
+      "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;"
+    }[c]));
+  }
 
+  function loadRazorpay() {
+    if (window.Razorpay) return Promise.resolve(true);
+    return new Promise((resolve, reject) => {
+      const script = document.createElement("script");
+      script.src = "https://checkout.razorpay.com/v1/checkout.js";
+      script.onload = () => resolve(true);
+      script.onerror = () => reject(new Error("Razorpay Checkout load nahi hua."));
+      document.head.appendChild(script);
+    });
+  }
+
+  function showPrompt(title, promptText, note) {
+    document.getElementById("df-unlock-status-modal")?.remove();
     const overlay = document.createElement("div");
     overlay.id = "df-unlock-status-modal";
     overlay.className = "df-profile-overlay";
@@ -3026,19 +3037,87 @@ window.unlock = async function(promptTitle) {
     overlay.innerHTML = `
       <div class="df-profile-box" role="dialog" aria-modal="true" aria-labelledby="df-unlock-title">
         <button type="button" class="df-profile-close" aria-label="Close">×</button>
-        <h2 id="df-unlock-title" class="df-profile-name">Unlock prompt</h2>
-        <p><strong>${String(promptTitle).replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]))}</strong></p>
-        <p>Secure payment is not connected yet. No payment has been taken and this prompt has not been unlocked.</p>
-        <p>Once Razorpay/server-side payment verification is configured, this button can complete the purchase safely.</p>
+        <h2 id="df-unlock-title" class="df-profile-name">🔓 ${dfEscape(title)}</h2>
+        <p>${dfEscape(note || "Payment verified. Your prompt is unlocked.")}</p>
+        <pre style="white-space:pre-wrap;overflow-wrap:anywhere;max-height:55vh;overflow:auto;padding:12px;border-radius:10px;background:rgba(127,127,127,.12)">${dfEscape(promptText || "Prompt content abhi available nahi hai. Support se sampark karein.")}</pre>
       </div>`;
     document.body.appendChild(overlay);
     overlay.querySelector("button").addEventListener("click", () => overlay.remove());
     overlay.addEventListener("click", e => { if (e.target === overlay) overlay.remove(); });
-  } catch (e) {
-    console.error("Unlock flow error:", e);
-    alert("Unable to start unlock. Please try again later.");
   }
-};
+
+  window.unlock = async function (promptTitle) {
+    const button = [...document.querySelectorAll('button[onclick]')].find(b => b.getAttribute("onclick") === `unlock('${String(promptTitle).replace(/\\/g, "\\\\").replace(/'/g, "\\'")}')`);
+    if (button) { button.disabled = true; button.dataset.oldText = button.textContent; button.textContent = "Please wait..."; }
+    try {
+      if (!window.supabase || typeof supabaseClient === "undefined") throw new Error("Supabase connection nahi mil raha.");
+      const { data: authData, error: authError } = await supabaseClient.auth.getUser();
+      if (authError || !authData?.user) {
+        const login = document.getElementById("loginModal");
+        if (login) login.style.display = "flex";
+        else alert("Payment se pehle login karein.");
+        return;
+      }
+
+      const { data: orderData, error: orderError } = await supabaseClient.functions.invoke("create-razorpay-order", {
+        body: { prompt_title: String(promptTitle) }
+      });
+      if (orderError) throw new Error(orderData?.error || orderError.message || "Order create nahi hua.");
+      if (orderData?.already_purchased) {
+        showPrompt(orderData.prompt_title || promptTitle, orderData.prompt_text, "Aapne yeh prompt pehle hi kharida hua hai.");
+        return;
+      }
+      if (!orderData?.order_id || !orderData?.key_id || !Number(orderData.amount)) throw new Error(orderData?.error || "Payment order response adhura hai.");
+
+      await loadRazorpay();
+      const checkout = new window.Razorpay({
+        key: orderData.key_id,
+        amount: orderData.amount,
+        currency: orderData.currency || "INR",
+        name: "Dharmvir Finds",
+        description: `Unlock: ${orderData.prompt_title || promptTitle}`,
+        order_id: orderData.order_id,
+        prefill: { email: orderData.customer_email || authData.user.email || "" },
+        theme: { color: "#11827f" },
+        handler: async function (response) {
+          try {
+            const { data: verifyData, error: verifyError } = await supabaseClient.functions.invoke("verify-razorpay-payment", {
+              body: {
+                razorpay_order_id: response.razorpay_order_id,
+                razorpay_payment_id: response.razorpay_payment_id,
+                razorpay_signature: response.razorpay_signature
+              }
+            });
+            if (verifyError || !verifyData?.verified) {
+              console.error("Payment verification response:", verifyError || verifyData);
+              alert(verifyData?.error || "Payment verification abhi complete nahi hua. Dobara payment na karein; My Purchases check karein.");
+              return;
+            }
+            showPrompt(orderData.prompt_title || promptTitle, verifyData.prompt_text, verifyData.warning || "Payment verified. Your prompt is unlocked.");
+          } catch (verifyError) {
+            console.error("Payment verification error:", verifyError);
+            alert("Payment ka result verify nahi ho saka. Dobara payment na karein; My Purchases check karein ya support se sampark karein.");
+          }
+        },
+        modal: {
+          ondismiss: function () {
+            console.info("Razorpay checkout closed by customer.");
+          }
+        }
+      });
+      checkout.on("payment.failed", function (response) {
+        console.error("Razorpay payment failed:", response.error);
+        alert(response.error?.description || "Payment fail hua. Aapse paise deduct hue hon to dobara payment karne se pehle My Purchases aur bank status check karein.");
+      });
+      checkout.open();
+    } catch (error) {
+      console.error("Unlock/payment start error:", error);
+      alert(error?.message || "Payment start nahi ho paya. Please try again later.");
+    } finally {
+      if (button) { button.disabled = false; button.textContent = button.dataset.oldText || "Unlock"; }
+    }
+  };
+})();
 </script>
 
 </body>
